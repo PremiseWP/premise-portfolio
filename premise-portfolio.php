@@ -140,8 +140,10 @@ class Premise_Portfolio {
 
 			add_action( 'tgmpa_register', array( $this, 'require_premise' ) );
 		}
-
 		
+		require_once 'classes/class-options-page.php';
+
+		require_once 'classes/class-portfolio-cpt.php';
 	}
 
 
@@ -155,7 +157,9 @@ class Premise_Portfolio {
 	 */
 	public function do_hooks() {
 
-		# add hooks here
+		add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
+
+		add_action( 'init', array( PWPP_Portfolio_CPT::get_instance(), 'init' ) );
 	}
 
 

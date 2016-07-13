@@ -1,0 +1,101 @@
+<?php 
+/**
+ * Build and display the options page
+ *
+ * @package premise-portfolio
+ */
+
+
+
+/**
+* 
+*/
+class PWPP_Options_Page {
+	
+	/**
+	 * Plugin instance.
+	 *
+	 * @see get_instance()
+	 *
+	 * @var object
+	 */
+	protected static $instance = null;
+
+
+
+
+	/**
+	 * Plugin url
+	 *
+	 * @var string
+	 */
+	public $plugin_url = PLUGIN_URL;
+
+
+
+
+	/**
+	 * Plugin path
+	 *
+	 * @var strin
+	 */
+	public $plugin_path = PLUGIN_PATH;
+
+
+
+
+
+	/**
+	 * Constructor. Intentionally left empty and public.
+	 *
+	 * @see 	init()
+	 * @since 	1.0
+	 */
+	public function __construct() {}
+
+
+
+
+
+	/**
+	 * Access this plugin’s working instance
+	 *
+	 * @since   1.0
+	 * @return  object instance of this class
+	 */
+	public static function get_instance() {
+		null === self::$instance and self::$instance = new self;
+
+		return self::$instance;
+	}
+
+
+
+	/**
+	 * initiate our plugin
+	 * 
+	 * @return void does not return anything
+	 */
+	public function init() {
+		new Premise_Options( 
+			array(                   // pass the arguments expected by add_menu_page()
+				'title'      => 'Premise Portfolio Options Page',
+				'menu_title' => 'Portfolio',
+				'menu_slug'  => 'premise-portfolio',
+				'callback'   => array( $this, 'render_page' )
+			), 
+			'',                      // pass empty fields so nothign displays and we control render via callback
+			'pwpp_portfolio',        // pass key for our options to be created in the database (option name)
+			'pwpp_portfolio_options' // pass an options group for our option name
+		);
+	}
+
+
+
+
+	public function render_page() {
+		# code goes here
+	}
+}
+
+?>
