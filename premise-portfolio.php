@@ -39,6 +39,8 @@ define( 'PWPP_URL', plugin_dir_url( __FILE__ ) );
 // Must use 'plugins_loaded' hook.
 add_action( 'plugins_loaded', array( Premise_Portfolio::get_instance(), 'init' ) );
 
+
+
 /**
  * Load Plugin!
  *
@@ -156,9 +158,10 @@ class Premise_Portfolio {
 	 * Registers and enqueues scripts, adds classes to the body of DOM
 	 */
 	public function do_hooks() {
-
+		// Initiate the options page 
 		add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
 
+		// Initiate and register our custom post type 
 		add_action( 'init', array( PWPP_Portfolio_CPT::get_instance(), 'init' ) );
 	}
 

@@ -2,13 +2,13 @@
 /**
  * Build and display the options page
  *
- * @package premise-portfolio
+ * @package premise-portfolio\classes
  */
 
 
 
 /**
-* 
+* This class displays the options page in the backend.
 */
 class PWPP_Options_Page {
 	
@@ -91,8 +91,11 @@ class PWPP_Options_Page {
 	}
 
 
-
-
+	/**
+	 * render the content for our options page
+	 * 
+	 * @return string the html for the options page
+	 */
 	public function render_page() {
 		# code goes here
 	}
