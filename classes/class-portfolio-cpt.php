@@ -72,13 +72,16 @@ class PWPP_Portfolio_CPT {
 
 
 	/**
-	 * initiate our plugin
+	 * initiate our plugin and registers the necessary hooks for our custom post type to work properly
 	 * 
 	 * @return void does not return anything
 	 */
 	public function init() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'do_save' ), 10 );
+
+		add_filter( 'template_include', array( $this, 'portfolio_page_template' ), 99 );
+
 	}
 
 
@@ -166,6 +169,35 @@ class PWPP_Portfolio_CPT {
         $pwpp_mb = $_POST['premise_portfolio'];
 
         update_post_meta( $post_id, 'premise_portfolio', $pwpp_mb );
+	}
+
+
+	/*
+		Loading the template
+	 */
+	
+
+	function portfolio_page_template( $template ) {
+// var_dump($template);
+// var_dump(dirname( __FILE__ ) . '/view/single-premise-portfolio.php');
+		if ( is_page( 'premise_portfolio' )  ) {
+			$new_template = locate_template( array( 'single-premise-portfolio.php' ) );
+			if ( '' != $new_template ) {
+				return $new_template ;
+			}
+		}
+
+		return (string) PWPP_PATH . '/view/single-premise-portfolio.php';
+		// if ( $overridden_template = locate_template( 'some-template.php' ) ) {
+		// 	// locate_template() returns path to file
+		// 	// if either the child theme or the parent theme have overridden the template
+		// 	load_template( $overridden_template );
+		// }
+		// else {
+		// 	// If neither the child nor parent theme have overridden the template,
+		// 	// we load the template from the 'templates' sub-directory of the directory this file is in
+		// 	load_template( dirname( __FILE__ ) . '/templates/some-template.php' );
+		// }
 	}
 }
 
