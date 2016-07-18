@@ -16,9 +16,9 @@ get_header();
 
 ?>
 
-<section id="pwpp-single-portfolio" class="">
+<section id="pwpp-single-portfolio" class="premise-block premise-clear-float">
 	
-	<div class="pwpp-container">
+	<div class="pwpp-container premise-clear-float">
 		
 		<?php if ( have_posts() ) :
 			
@@ -31,8 +31,7 @@ get_header();
 
 				<?php if ( has_post_thumbnail() ) : ?>
 					<!-- The featured image -->
-					<div class="pwpp-post-thumbnail">
-						<?php the_post_thumbnail( 'full', array( 'class' => 'premise-responsive' ) ); ?>
+					<div class="pwpp-post-thumbnail" style="background-image: url( <?php echo esc_url( wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) ) ); ?> );">
 					</div>
 				<?php endif; ?>
 
