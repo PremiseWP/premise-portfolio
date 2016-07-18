@@ -146,6 +146,9 @@ class Premise_Portfolio {
 		require_once 'classes/class-options-page.php';
 
 		require_once 'classes/class-portfolio-cpt.php';
+
+
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_n_styles' ) );
 	}
 
 
@@ -207,5 +210,18 @@ class Premise_Portfolio {
 
 		tgmpa( $plugins, $config );
 
+	}
+
+
+
+
+	public function scripts_n_styles() {
+		wp_register_style( 'pwpp_css', PWPP_URL . '/css/style.min.css' );
+		wp_register_script( 'pwpp_js', PWPP_URL . '/js/script.min.js' );
+
+		if ( ! is_admin() ) {
+			wp_enqueue_style( 'pwpp_css' );
+			wp_enqueue_script( 'pwpp_js' );
+		}
 	}
 }
