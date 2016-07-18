@@ -126,6 +126,8 @@ class PWPP_Portfolio_CPT {
 			'wrapper_class' => 'span4', 
 			'context' => 'post', 
 		) );
+
+		// TODO Add styles for CTA - you should be able to style how the CTA button looks.
 	}
 
 
