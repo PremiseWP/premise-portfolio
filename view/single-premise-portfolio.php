@@ -1,14 +1,14 @@
-<?php 
+<?php
 /**
  * Premise Portfolio post view
  *
  * @package premise-portfolio\view
  */
 
-// set our variables 
+// set our variables
 $pwpp_portfolio = premise_get_value( 'premise_portfolio', 'post' );
 
-// CTA 
+// CTA
 $pwpp_cta_url  = (string) isset( $pwpp_portfolio['cta-url'] )  ? $pwpp_portfolio['cta-url']  : '';
 $pwpp_cta_text = (string) isset( $pwpp_portfolio['cta-text'] ) ? $pwpp_portfolio['cta-text'] : '';
 
@@ -17,29 +17,25 @@ get_header();
 ?>
 
 <section id="pwpp-single-portfolio" class="premise-block premise-clear-float">
-	
+
 	<div class="pwpp-container premise-clear-float">
-		
+
 		<?php if ( have_posts() ) :
-			
+
 			while ( have_posts() ) : the_post(); ?>
-				
+
 				<!-- The title -->
 				<div class="pwpp-post-title">
 					<h1><?php the_title(); ?></h1>
 				</div>
 
-				<?php if ( has_post_thumbnail() ) : ?>
-					<!-- The featured image -->
-					<div class="pwpp-post-thumbnail" style="background-image: url( <?php echo esc_url( wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) ) ); ?> );">
-					</div>
-				<?php endif; ?>
+				<?php pwpp_the_thumbanail(); ?>
 
 				<?php if ( '' !== $pwpp_cta_url ) : ?>
 					<!-- The CTA -->
 					<div class="pwpp-post-cta">
 						<a href="<?php echo esc_url( $pwpp_portfolio['cta-url'] ); ?>" class="pwpp-post-cta-url">
-							
+
 							<?php if ( '' !== $pwpp_cta_text ) : ?>
 								<span class="pwpp-post-cta-text">
 									<?php echo esc_html( $pwpp_portfolio['cta-text'] ); ?>
@@ -58,7 +54,7 @@ get_header();
 			<?php endwhile;
 
 		else :
-			
+
 			# what happens if there are no posts?
 
 		endif; ?>

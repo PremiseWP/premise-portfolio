@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Premise Portfolio
  * Description: Plugin to display beautiful portfolio. Is meant to be silmple, user friednly, yet extremely flexible.
- * Plugin URI:	
+ * Plugin URI:
  * Version:     1.0.0
  * Author:      Premise WP <info@premisewp.com> by: Mario Vallejo
  * Author URI:  http://premisewp.com
@@ -142,11 +142,12 @@ class Premise_Portfolio {
 
 			add_action( 'tgmpa_register', array( $this, 'require_premise' ) );
 		}
-		
+
 		require_once 'classes/class-options-page.php';
 
 		require_once 'classes/class-portfolio-cpt.php';
 
+		require_once 'lib/functions.php';
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_n_styles' ) );
 	}
@@ -161,10 +162,10 @@ class Premise_Portfolio {
 	 * Registers and enqueues scripts, adds classes to the body of DOM
 	 */
 	public function do_hooks() {
-		// Initiate the options page 
+		// Initiate the options page
 		add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
 
-		// Initiate and register our custom post type 
+		// Initiate and register our custom post type
 		add_action( 'init', array( PWPP_Portfolio_CPT::get_instance(), 'init' ) );
 	}
 
@@ -176,11 +177,11 @@ class Premise_Portfolio {
 	 *
 	 * @wp_hook tgmpa_register
 	 * @see  do_includes()
-	 * 
+	 *
 	 * @return void does not return anything
 	 */
 	public function resquire_premise() {
-		
+
 		$plugins = array(
 			array(
 				'name'               => 'Premise WP',

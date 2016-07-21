@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Build and display the options page
  *
@@ -11,7 +11,7 @@
 * This class registers our custom post type and adds the meta box necessary
 */
 class PWPP_Portfolio_CPT {
-	
+
 	/**
 	 * Plugin instance.
 	 *
@@ -25,7 +25,7 @@ class PWPP_Portfolio_CPT {
 
 	/**
 	 * the cutom post type supported
-	 * 
+	 *
 	 * @var array
 	 */
 	public $post_type = array( 'premise_portfolio' );
@@ -42,15 +42,15 @@ class PWPP_Portfolio_CPT {
 		new PremiseCPT( array(
 			'plural' => 'Portfolio Items',
 			'singular' => 'Portfolio Item',
-			'post_type_name' => 'premise_portfolio', 
-			'slug' => 'premise-portfolio', 
+			'post_type_name' => 'premise_portfolio',
+			'slug' => 'premise-portfolio',
 		), array(
 			'supports' => array(
-				'title', 
-				'editor', 
-				'auhtor', 
-				'thumbnail', 
-				'custom-fields', 
+				'title',
+				'editor',
+				'auhtor',
+				'thumbnail',
+				'custom-fields',
 			),
 		) );
 	}
@@ -73,7 +73,7 @@ class PWPP_Portfolio_CPT {
 
 	/**
 	 * initiate our plugin and registers the necessary hooks for our custom post type to work properly
-	 * 
+	 *
 	 * @return void does not return anything
 	 */
 	public function init() {
@@ -88,7 +88,7 @@ class PWPP_Portfolio_CPT {
 
 	/**
 	 * Add the meta box if within our custom post type
-	 * 
+	 *
 	 * @param string $post_type the cusotm post type currently loaded
 	 */
 	public function add_meta_boxes( $post_type ) {
@@ -100,31 +100,47 @@ class PWPP_Portfolio_CPT {
 
 	/**
 	 * render the metabox content
-	 * 
+	 *
 	 * @return strinf the html for the meta box content
 	 */
 	public function render_meta_box() {
 		wp_nonce_field( 'premise_portfolio_nonce_check', 'premise_portfolio_nonce' );
 
+		// Handle the feature image
+		echo '<h4>Featured Image</h4>';
+
+		premise_field( 'select', array(
+			'name'          => 'premise_portfolio[featured-image-link]',
+			'label'         => 'Featured image link',
+			'options'       => array(
+				'to the atachment page' => 'attachment',
+				'to a lightbox'         => 'lightbox',
+				'to the image file'     => 'image',
+				'No, don\'t link it'    => 'no-link',
+			),
+			'wrapper_class' => 'span4',
+			'context'       => 'post',
+		) );
+
 		// Add a call to action
 		echo '<h4>Call to Action</h4>';
 
 		// the url
-		premise_field( 'text', array( 
-			'name' => 'premise_portfolio[cta-url]', 
-			'placeholder' => 'project url', 
-			'label' => 'Call to Action URL', 
-			'wrapper_class' => 'span4', 
-			'context' => 'post', 
+		premise_field( 'text', array(
+			'name' => 'premise_portfolio[cta-url]',
+			'placeholder' => 'project url',
+			'label' => 'Call to Action URL',
+			'wrapper_class' => 'span4',
+			'context' => 'post',
 		) );
 
 		// the text
-		premise_field( 'text', array( 
-			'name' => 'premise_portfolio[cta-text]', 
-			'placeholder' => 'Go to project', 
-			'label' => 'Call to Action URL', 
-			'wrapper_class' => 'span4', 
-			'context' => 'post', 
+		premise_field( 'text', array(
+			'name' => 'premise_portfolio[cta-text]',
+			'placeholder' => 'Go to project',
+			'label' => 'Call to Action URL',
+			'wrapper_class' => 'span4',
+			'context' => 'post',
 		) );
 
 		// TODO Add styles for CTA - you should be able to style how the CTA button looks.
@@ -134,7 +150,7 @@ class PWPP_Portfolio_CPT {
 
 	/**
 	 * Save our custom post type met data
-	 * 
+	 *
 	 * @param  int $post_id the post id for the post currently being edited
 	 * @return void         does not return anything
 	 */
@@ -142,27 +158,27 @@ class PWPP_Portfolio_CPT {
 		// Add nonce for security and authentication.
         $nonce_name   = isset( $_POST['premise_portfolio_nonce'] ) ? $_POST['premise_portfolio_nonce'] : '';
         $nonce_action = 'premise_portfolio_nonce_check';
- 
+
         // Check if nonce is set.
         if ( ! isset( $nonce_name ) ) {
             return;
         }
- 
+
         // Check if nonce is valid.
         if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
             return;
         }
- 
+
         // Check if user has permissions to save data.
         if ( ! current_user_can( 'edit_post', $post_id ) ) {
             return;
         }
- 
+
         // Check if not an autosave.
         if ( wp_is_post_autosave( $post_id ) ) {
             return;
         }
- 
+
         // Check if not a revision.
         if ( wp_is_post_revision( $post_id ) ) {
             return;
@@ -177,7 +193,7 @@ class PWPP_Portfolio_CPT {
 	/*
 		Loading the template
 	 */
-	
+
 
 	function portfolio_page_template( $template ) {
 // var_dump($template);
