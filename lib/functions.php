@@ -30,6 +30,8 @@ if ( ! function_exists( 'pwpp_get_thumbnail' ) ) {
 			/**
 			 * Check how to link the features image
 			 */
+			/*
+			// Remove for now. This plugin should be basic given that it allows you to modify the whole template.
 			switch( $link ) {
 				case 'no-link' :
 					$_link_html = '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
@@ -57,7 +59,9 @@ if ( ! function_exists( 'pwpp_get_thumbnail' ) ) {
 				default :
 					$_link_html = '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
 					break;
-			}
+			}*/
+
+			$_link_html = '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
 		}
 
 		// return the link html
@@ -99,4 +103,37 @@ if ( ! function_exists( 'pwpp_init_lightbox' ) ) {
 
 		echo (string) $lightbox;
 	}
+}
+
+
+
+function get_the_call_to_action() {
+	global $post;
+
+	// set our variables
+	$pwpp_portfolio = premise_get_value( 'premise_portfolio', array( 'context' => 'post', 'id' => $post->ID ) );
+
+	// CTA
+	$pwpp_cta_url  = (string) isset( $pwpp_portfolio['cta-url'] )  ? $pwpp_portfolio['cta-url']  : '';
+	$pwpp_cta_text = (string) isset( $pwpp_portfolio['cta-text'] ) ? $pwpp_portfolio['cta-text'] : '';
+
+	$_html = '';
+
+	if ( '' !== $pwpp_cta_url ) : ob_start(); ?>
+		<!-- The CTA -->
+		<div class="pwpp-post-cta">
+			<a href="<?php echo esc_url( $pwpp_portfolio['cta-url'] ); ?>" class="pwpp-post-cta-url" >
+
+				<?php if ( '' !== $pwpp_cta_text ) : ?>
+					<span class="pwpp-post-cta-text">
+						<?php echo esc_html( $pwpp_portfolio['cta-text'] ); ?>
+					</span>
+				<?php endif; ?>
+
+			</a>
+		</div>
+	<?php $_html = ob_get_clean();
+	endif;
+
+	return (string) $_html;
 }

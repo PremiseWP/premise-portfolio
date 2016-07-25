@@ -147,6 +147,8 @@ class Premise_Portfolio {
 
 		require_once 'classes/class-portfolio-cpt.php';
 
+		require_once 'classes/class-shortcode.php';
+
 		require_once 'lib/functions.php';
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_n_styles' ) );
@@ -167,6 +169,13 @@ class Premise_Portfolio {
 
 		// Initiate and register our custom post type
 		add_action( 'init', array( PWPP_Portfolio_CPT::get_instance(), 'init' ) );
+
+		// register our shortcode
+		add_shortcode( 'pwpp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
+
+		add_filter( 'template_include', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_page_template' ), 99 );
+
+		add_filter( 'excerpt_length', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_excerpt_trim' ) );
 	}
 
 

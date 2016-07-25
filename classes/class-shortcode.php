@@ -1,0 +1,133 @@
+<?php
+/**
+ * Create and handle our shortcde to display portfolio items.
+ *
+ * @package premise-portfolio\classes
+ */
+
+
+class PWPP_Shortcode {
+
+	/**
+	 * Plugin instance.
+	 *
+	 * @see get_instance()
+	 *
+	 * @var object
+	 */
+	protected static $instance = null;
+
+
+
+	public $defaults = array(
+		'grid' => '4',
+		'show-cta' => false,
+	);
+
+
+
+	protected $query = null;
+
+
+	public $a = array();
+
+
+
+	/**
+	 * creates our custom post type. The custom post type class neeeds to be initiated on init. so we run it here.
+	 *
+	 * @see 	init()
+	 * @since 	1.0.0
+	 */
+	public function __construct() {}
+
+
+
+	/**
+	 * Access this plugin’s working instance
+	 *
+	 * @since   1.0.0
+	 * @return  object instance of this class
+	 */
+	public static function get_instance() {
+		null === self::$instance and self::$instance = new self;
+
+		return self::$instance;
+	}
+
+
+
+	/**
+	 * initiate our plugin and registers the necessary hooks for our custom post type to work properly
+	 *
+	 * @return void does not return anything
+	 */
+	public function init( $atts ) {
+		$this->a = shortcode_atts( $this->defaults, $atts, 'pwpp_portfolio' );
+
+		// get the portfolio items
+		$this->query = new WP_query( array(
+			'post_type' => 'premise_portfolio',
+			'posts_per_page' => -1,
+
+		) );
+		wp_reset_query();
+
+		if ( $this->query->have_posts() ) {
+			return $this->do_loop();
+		}
+
+		return '';
+	}
+
+
+
+	/**
+	 * perform the loop. returns the html for the posts grid
+	 *
+	 * @return string html for posts grid
+	 */
+	protected function do_loop() {
+		$_html = '';
+
+		$col = ( 6 >= (int) $this->a['grid'] && 2 <= (int) $this->a['grid'] ) ? 'col'.$this->a['grid'] : 'col'.$this->defaults['grid'];
+
+		ob_start(); ?>
+
+		<div id="pwpp-portfolio-grid">
+			<div class="premise-row"><?php
+				while ( $this->query->have_posts() ) {
+					$this->query->the_post();
+					?>
+					<div class="pwpp-item <? echo esc_attr( $col ); ?>">
+						<div class="pwpp-item-inner">
+							<?php if ( '' !== get_the_title() ) : ?>
+								<div class="pwpp-post-title">
+									<a href="<?php the_permalink(); ?>" class="premise-block">
+										<h2><?php the_title(); ?></h2>
+									</a>
+								</div>
+							<?php endif; ?>
+							<?php if ( has_post_thumbnail() ) : ?>
+									<a href="<?php the_permalink(); ?>" class="premise-block">
+										<?php pwpp_the_thumbanail(); ?>
+									</a>
+							<?php endif; ?>
+							<?php if ( (boolean) $this->a['show-cta'] ) echo get_the_call_to_action(); ?>
+							<div class="pwpp-post-excerpt">
+								<?php the_excerpt(); ?>
+							</div>
+						</div>
+					</div>
+					<?
+				} ?>
+			</div>
+		</div><?php
+
+		$_html = ob_get_clean();
+
+		return (string) $_html;
+	}
+}
+
+?>

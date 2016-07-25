@@ -79,9 +79,6 @@ class PWPP_Portfolio_CPT {
 	public function init() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'do_save' ), 10 );
-
-		add_filter( 'template_include', array( $this, 'portfolio_page_template' ), 99 );
-
 	}
 
 
@@ -106,44 +103,43 @@ class PWPP_Portfolio_CPT {
 	public function render_meta_box() {
 		wp_nonce_field( 'premise_portfolio_nonce_check', 'premise_portfolio_nonce' );
 
-		// Handle the feature image
-		echo '<h4>Featured Image</h4>';
-
-		premise_field( 'select', array(
-			'name'          => 'premise_portfolio[featured-image-link]',
-			'label'         => 'Featured image link',
-			'options'       => array(
-				'to the atachment page' => 'attachment',
-				'to a lightbox'         => 'lightbox',
-				'to the image file'     => 'image',
-				'No, don\'t link it'    => 'no-link',
-			),
-			'wrapper_class' => 'span4',
-			'context'       => 'post',
-		) );
-
 		// Add a call to action
-		echo '<h4>Call to Action</h4>';
+		?>
+		<div class="premise-row">
+			<div class="col2">
+				<h4>Insert A Call To Action</h4>
+				<p><i class="description">This is the main button displayed under the featured image.</i></p>
+				<?php
+				// the url
+				premise_field( 'text', array(
+					'name' => 'premise_portfolio[cta-url]',
+					'placeholder' => 'project url',
+					'label' => 'Call to Action URL',
+					'context' => 'post',
+				) );
 
-		// the url
-		premise_field( 'text', array(
-			'name' => 'premise_portfolio[cta-url]',
-			'placeholder' => 'project url',
-			'label' => 'Call to Action URL',
-			'wrapper_class' => 'span4',
-			'context' => 'post',
-		) );
+				// the text
+				premise_field( 'text', array(
+					'name' => 'premise_portfolio[cta-text]',
+					'placeholder' => 'Go to project',
+					'label' => 'Call to Action URL',
+					'context' => 'post',
+				) );
+				?>
 
-		// the text
-		premise_field( 'text', array(
-			'name' => 'premise_portfolio[cta-text]',
-			'placeholder' => 'Go to project',
-			'label' => 'Call to Action URL',
-			'wrapper_class' => 'span4',
-			'context' => 'post',
-		) );
-
-		// TODO Add styles for CTA - you should be able to style how the CTA button looks.
+				<h4>Excerpt Length</h4>
+				<?php
+				premise_field( 'text', array(
+					'name' => 'premise_portfolio[excerpt]',
+					'placeholder' => '22',
+					'label' => 'Enter number of words',
+					'context' => 'post',
+					'style' => 'max-width: 60px;',
+				) );
+				?>
+			</div>
+		</div>
+		<?php
 	}
 
 
@@ -195,27 +191,53 @@ class PWPP_Portfolio_CPT {
 	 */
 
 
+	/**
+	 * replace the template for our portfolio items
+	 *
+	 * By naming a a file 'single-premise-portfolio.php' and placing it in the theme's directory
+	 * the plugin will try to load that theme instead of our default. This makes it very easy to
+	 * create custom templates for the plugin. Looks for the file in the child theme first, then
+	 * the parent theme if it cant find it. lastly it loads our default template if neither theme
+	 * had the file 'single-premise-portfolio.php'. And of course, if we are not in the premise-portfolio
+	 * post_type then we return the template that Wordpress was going to load - we dont change anything.
+	 *
+	 * @wp_hook  template_include
+	 *
+	 * @param  string $template the current template. the one would normally be loaded.
+	 * @return string           the new template. either our own template our the theme's template. or the current template
+	 */
 	function portfolio_page_template( $template ) {
-// var_dump($template);
-// var_dump(dirname( __FILE__ ) . '/view/single-premise-portfolio.php');
-		if ( is_page( 'premise_portfolio' )  ) {
+		global $post;
+
+		if ( 'premise_portfolio' == $post->post_type  ) {
+			// check if the theme is trying to overwrite the template
 			$new_template = locate_template( array( 'single-premise-portfolio.php' ) );
 			if ( '' != $new_template ) {
 				return $new_template ;
 			}
+			return (string) PWPP_PATH . '/view/single-premise-portfolio.php';
 		}
+		return $template;
+	}
 
-		return (string) PWPP_PATH . '/view/single-premise-portfolio.php';
-		// if ( $overridden_template = locate_template( 'some-template.php' ) ) {
-		// 	// locate_template() returns path to file
-		// 	// if either the child theme or the parent theme have overridden the template
-		// 	load_template( $overridden_template );
-		// }
-		// else {
-		// 	// If neither the child nor parent theme have overridden the template,
-		// 	// we load the template from the 'templates' sub-directory of the directory this file is in
-		// 	load_template( dirname( __FILE__ ) . '/templates/some-template.php' );
-		// }
+
+
+	/**
+	 * Filter the excerpt length for permise portfilio items. defaults to 22
+	 * but can be cnfigurable from the backend.
+	 *
+	 * @wp_hook excerpt_length
+	 *
+	 * @param  int $length excerpt legth
+	 * @return int         new excerpt length
+	 */
+	function portfolio_excerpt_trim( $length ) {
+		global $post;
+
+		if ( 'premise_portfolio' == $post->post_type  ) {
+			return ( '' !== $new_length = ( string ) premise_get_value( 'premise_portfolio[excerpt]', array( 'context' => 'post', 'id' => $post->ID ) ) ) ? $new_length : 22;
+		}
+		return $length;
 	}
 }
 

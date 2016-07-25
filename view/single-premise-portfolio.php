@@ -34,7 +34,7 @@ get_header();
 				<?php if ( '' !== $pwpp_cta_url ) : ?>
 					<!-- The CTA -->
 					<div class="pwpp-post-cta">
-						<a href="<?php echo esc_url( $pwpp_portfolio['cta-url'] ); ?>" class="pwpp-post-cta-url">
+						<a href="<?php echo esc_url( $pwpp_portfolio['cta-url'] ); ?>" class="pwpp-post-cta-url" >
 
 							<?php if ( '' !== $pwpp_cta_text ) : ?>
 								<span class="pwpp-post-cta-text">
