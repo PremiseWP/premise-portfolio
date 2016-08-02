@@ -71,7 +71,7 @@ function pwpp_init_lightbox() {
  *
  * @return string html for call to action
  */
-function get_the_call_to_action() {
+function pwpp_get_the_call_to_action() {
 	global $post;
 
 	// set our variables
@@ -100,4 +100,34 @@ function get_the_call_to_action() {
 	endif;
 
 	return (string) $_html;
+}
+
+
+/**
+ * get the grid parametter used in the shortcode being displayed
+ *
+ * @return string column class to use
+ */
+function pwpp_get_grid_param() {
+	return PWPP_Shortcode::get_grid_param();
+}
+
+
+/**
+ * returns the have posts() function from our query
+ *
+ * @return boolean checks if there are any posts in our loop
+ */
+function pwpp_have_posts() {
+	return PWPP_Shortcode::have_posts();
+}
+
+
+/**
+ * prepares the post within our loop
+ *
+ * @return void makes global functions and variable available for us.
+ */
+function pwpp_the_post() {
+	return PWPP_Shortcode::the_post();
 }

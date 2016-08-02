@@ -46,12 +46,8 @@
 /* The Portfolio Grid */
 
 #pwpp-portfolio-grid .pwpp-item {
-	margin-left: 0;
-	margin-right: 0;
-	margin-bottom: 0;
-	width: 100%;
-	box-shadow: 0 0 1px 0 #ccc;
-	overflow: hidden;
+	margin-bottom: 30px;
+	padding: 0 10px;
 	cursor: pointer;
 }
 
@@ -63,6 +59,7 @@
 	cursor: pointer;
 	border: 0;
 	overflow: hidden;
+	box-shadow: 0 0 1px 0 #ccc;
 }
 
 #pwpp-portfolio-grid .pwpp-item .pwpp-post-title,
@@ -76,6 +73,8 @@
 #pwpp-portfolio-grid .pwpp-item .pwpp-post-title {
 	line-height: 40px;
 	padding: 5px 10px;
+	white-space: nowrap;
+	background-color: rgba( 255, 255, 255, 0.9 );;
 }
 
 #pwpp-portfolio-grid .pwpp-item .pwpp-post-title h2 {
@@ -84,6 +83,9 @@
 	font-size: 35px;
 	vertical-align: middle;
 	text-align: left;
+	overflow: hidden;
+	width: 100%;
+	text-overflow: ellipsis;
 }
 
 #pwpp-portfolio-grid .pwpp-item .pwpp-post-thumbnail {
@@ -97,13 +99,15 @@
 
 #pwpp-portfolio-grid .pwpp-post-excerpt {
 	position: absolute;
-	bottom: -100%;
+	top: 100%;
 	left: 0;
 	width: 100%;
-	padding: 10px;
-	height: auto;
-	transition: bottom .4s .4s ease-in-out;
+	height: 100%;
+	padding: 60px 10px 10px 10px; /* Account for 50px the thumbnails slides down for plus the 10px additional padding across all sides */
+	transition: top .4s .4s ease-in-out;
 	background-color: rgba( 255, 255, 255, 0.8 );
+	overflow: auto;
+	box-sizing: border-box;
 }
 
 #pwpp-portfolio-grid .pwpp-item:hover .pwpp-post-thumbnail {
@@ -112,11 +116,16 @@
 }
 
 #pwpp-portfolio-grid .pwpp-item:hover .pwpp-post-excerpt {
-	bottom: 0;
+	top: 0px;
+	z-index: 8;
+}
+
+#pwpp-portfolio-grid .pwpp-item:hover .pwpp-post-title {
+	z-index: 9;
 }
 
 
-@media screen and ( min-width: 768px ) {
+/*@media screen and ( min-width: 768px ) {
 	#pwpp-portfolio-grid .pwpp-item {
 		width: 50%;
 	}
@@ -127,7 +136,7 @@
 	#pwpp-portfolio-grid .pwpp-item {
 		width: 33.33%;
 	}
-}
+}*/
 
 
 /* The CTA */

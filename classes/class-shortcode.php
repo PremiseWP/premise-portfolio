@@ -21,6 +21,14 @@ class PWPP_Shortcode {
 
 
 	/**
+	 * Holds the shortcode params for public use. This is useful for templating.
+	 *
+	 * @var array
+	 */
+	public static $params = array();
+
+
+	/**
 	 * Thes shortcode defaults
 	 *
 	 * @var array
@@ -36,7 +44,7 @@ class PWPP_Shortcode {
 	 *
 	 * @var null
 	 */
-	protected $query = null;
+	protected static $query = null;
 
 
 	/**
@@ -46,6 +54,14 @@ class PWPP_Shortcode {
 	public $a = array();
 
 
+	/**
+	 * begin with a default template.
+	 *
+	 * @var string
+	 */
+	public $loop_tmpl = PWPP_PATH . '/view/loop-premise-portfolio.php';
+
+
 
 	/**
 	 * creates our custom post type. The custom post type class neeeds to be initiated on init. so we run it here.
@@ -53,7 +69,17 @@ class PWPP_Shortcode {
 	 * @see 	init()
 	 * @since 	1.0.0
 	 */
-	public function __construct() {}
+	public function __construct() {
+		// get the portfolio items
+		self::$query = new WP_query( array(
+			'post_type' => 'premise_portfolio',
+			'posts_per_page' => -1,
+
+		) );
+
+		// reset the query
+		wp_reset_query();
+	}
 
 
 
@@ -77,68 +103,69 @@ class PWPP_Shortcode {
 	 * @return void does not return anything
 	 */
 	public function init( $atts ) {
-		$this->a = shortcode_atts( $this->defaults, $atts, 'pwpp_portfolio' );
+		// get these params and sve them in our object for public use.
+		self::$params = $this->a = shortcode_atts( $this->defaults, $atts, 'pwpp_portfolio' );
 
-		// get the portfolio items
-		$this->query = new WP_query( array(
-			'post_type' => 'premise_portfolio',
-			'posts_per_page' => -1,
+		// Allow themes to override the tamllate that gets loaded
+		if ( '' !== $new_loop_tmpl = locate_template( 'loop-premise-portfolio.php' ) )
+			$this->loop_tmpl = $new_loop_tmpl;
 
-		) );
-		wp_reset_query();
-
-		if ( $this->query->have_posts() ) {
-			return $this->do_loop();
-		}
-
-		return '';
+		return $this->do_loop();
 	}
 
 
 
 	/**
-	 * perform the loop. returns the html for the posts grid
+	 * performs the loop. returns the html for the posts grid
 	 *
 	 * @return string html for posts grid
 	 */
 	protected function do_loop() {
 		$_html = '';
 
-		$col = ( 6 >= (int) $this->a['grid'] && 2 <= (int) $this->a['grid'] ) ? 'col'.$this->a['grid'] : 'col'.$this->defaults['grid'];
-
-		ob_start(); ?>
-
-		<div id="pwpp-portfolio-grid">
-			<div class="premise-row"><?php
-				while ( $this->query->have_posts() ) {
-					$this->query->the_post();
-					?>
-					<div class="pwpp-item <? echo esc_attr( $col ); ?>">
-						<a href="<?php the_permalink(); ?>" class="premise-block">
-							<div class="pwpp-item-inner">
-								<?php if ( '' !== get_the_title() ) : ?>
-									<div class="pwpp-post-title">
-										<h2><?php the_title(); ?></h2>
-									</div>
-								<?php endif; ?>
-								<?php if ( has_post_thumbnail() ) : ?>
-										<?php pwpp_the_thumbnail(); ?>
-								<?php endif; ?>
-								<?php if ( (boolean) $this->a['show-cta'] ) echo get_the_call_to_action(); ?>
-								<div class="pwpp-post-excerpt">
-									<?php the_excerpt(); ?>
-								</div>
-							</div>
-						</a>
-					</div>
-					<?
-				} ?>
-			</div>
-		</div><?php
-
+		// Get the template
+		ob_start();
+			include $this->loop_tmpl;
 		$_html = ob_get_clean();
 
 		return (string) $_html;
+	}
+
+
+	/*
+		Helpers
+	 */
+
+
+	/**
+	 * returns the shortcode grid param. called from our template pwpp_get_grid_param().
+	 *
+	 * @see pwpp_get_grid_param uses this function. located in lib/functions.php
+	 *
+	 * @return string column class to set the number of columns 1-6. defaults to 4. returns value already escaped using esc_attr();
+	 */
+	public static function get_grid_param() {
+		return esc_attr( ( 6 >= (int) self::$params['grid'] && 2 <= (int) self::$params['grid'] ) ? 'col'.self::$params['grid'] : 'col4' );
+	}
+
+
+	/**
+	 * return the query's have_posts() function
+	 *
+	 * @return mix return the wp have_posts() function scoped to our query of portfolio items
+	 */
+	public static function have_posts() {
+		return self::$query->have_posts();
+	}
+
+
+	/**
+	 * return the query's the_post() function
+	 *
+	 * @return mix return the wp the_post() function scoped to our query of portfolio items
+	 */
+	public static function the_post() {
+		return self::$query->the_post();
 	}
 }
 
