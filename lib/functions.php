@@ -18,19 +18,12 @@ function pwpp_get_thumbnail() {
 	// check if there is a post thumbnail
 	if ( has_post_thumbnail() ) {
 
-		// get the image link - link to the cta url
-		$link = (string) premise_get_value( 'premise_portfolio[cta-url]', 'post' );
-
 		// Img url
 		$img_url = (string) wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
 
 		$_html = '<div class="pwpp-post-thumbnail-wrapper">';
 
-			$_html .= ( '' !== $link ) ? '<a href="' . esc_url( $link ) . '" class="premise-block" target="_blank">' : '';
-
-				$_html .= '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
-
-			$_html .= ( '' !== $link ) ? '</a>' : '';
+			$_html .= '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
 
 		$_html .= '</div>';
 
@@ -55,7 +48,7 @@ function pwpp_the_thumbanail() {
 
 
 /**
- * outputs the htl required for us to use a ligthbox
+ * outputs the html required for us to use a ligthbox
  *
  * @return string  html necessary for lightbox element
  */
