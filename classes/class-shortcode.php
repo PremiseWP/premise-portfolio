@@ -114,24 +114,22 @@ class PWPP_Shortcode {
 					$this->query->the_post();
 					?>
 					<div class="pwpp-item <? echo esc_attr( $col ); ?>">
-						<div class="pwpp-item-inner">
-							<?php if ( '' !== get_the_title() ) : ?>
-								<div class="pwpp-post-title">
-									<a href="<?php the_permalink(); ?>" class="premise-block">
+						<a href="<?php the_permalink(); ?>" class="premise-block">
+							<div class="pwpp-item-inner">
+								<?php if ( '' !== get_the_title() ) : ?>
+									<div class="pwpp-post-title">
 										<h2><?php the_title(); ?></h2>
-									</a>
-								</div>
-							<?php endif; ?>
-							<?php if ( has_post_thumbnail() ) : ?>
-									<a href="<?php the_permalink(); ?>" class="premise-block">
+									</div>
+								<?php endif; ?>
+								<?php if ( has_post_thumbnail() ) : ?>
 										<?php pwpp_the_thumbanail(); ?>
-									</a>
-							<?php endif; ?>
-							<?php if ( (boolean) $this->a['show-cta'] ) echo get_the_call_to_action(); ?>
-							<div class="pwpp-post-excerpt">
-								<?php the_excerpt(); ?>
+								<?php endif; ?>
+								<?php if ( (boolean) $this->a['show-cta'] ) echo get_the_call_to_action(); ?>
+								<div class="pwpp-post-excerpt">
+									<?php the_excerpt(); ?>
+								</div>
 							</div>
-						</div>
+						</a>
 					</div>
 					<?
 				} ?>
