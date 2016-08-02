@@ -131,3 +131,25 @@ function pwpp_have_posts() {
 function pwpp_the_post() {
 	return PWPP_Shortcode::the_post();
 }
+
+
+/**
+ * return the cta url or false
+ *
+ * @return mix the url or false
+ */
+function pwpp_get_cta_url() {
+	global $post;
+	return premise_get_value( 'premise_portfolio[cta-url]', array( 'context' => 'post', 'id' => $post->ID ) );
+}
+
+
+/**
+ * return the cta text or false
+ *
+ * @return mix the text or false
+ */
+function pwpp_get_cta_text() {
+	global $post;
+	return premise_get_value( 'premise_portfolio[cta-text]', array( 'context' => 'post', 'id' => $post->ID ) );
+}

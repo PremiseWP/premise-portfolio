@@ -5,13 +5,6 @@
  * @package premise-portfolio\view
  */
 
-// set our variables
-$pwpp_portfolio = premise_get_value( 'premise_portfolio', 'post' );
-
-// CTA
-$pwpp_cta_url  = (string) isset( $pwpp_portfolio['cta-url'] )  ? $pwpp_portfolio['cta-url']  : '';
-$pwpp_cta_text = (string) isset( $pwpp_portfolio['cta-text'] ) ? $pwpp_portfolio['cta-text'] : '';
-
 get_header();
 
 ?>
@@ -29,8 +22,8 @@ get_header();
 					<h1><?php the_title(); ?></h1>
 				</div>
 
-				<?php if ( '' !== $pwpp_cta_url ) : ?>
-					<a href="<?php echo esc_url( $pwpp_cta_url ); ?>" class="premise-block" target="_blank">
+				<?php if ( pwpp_get_cta_url() ) : ?>
+					<a href="<?php echo esc_url( (string) pwpp_get_cta_url() ); ?>" class="premise-block" target="_blank">
 						<?php pwpp_the_thumbnail(); ?>
 					</a>
 				<?php else : ?>
@@ -42,14 +35,14 @@ get_header();
 					<?php the_content(); ?>
 				</div>
 
-				<?php if ( '' !== $pwpp_cta_url ) : ?>
+				<?php if ( pwpp_get_cta_url() ) : ?>
 					<!-- The CTA -->
 					<div class="pwpp-post-cta">
-						<a href="<?php echo esc_url( $pwpp_portfolio['cta-url'] ); ?>" class="pwpp-post-cta-url" target="_blank">
+						<a href="<?php echo esc_url( (string) pwpp_get_cta_url() ); ?>" class="pwpp-post-cta-url" target="_blank">
 
-							<?php if ( '' !== $pwpp_cta_text ) : ?>
+							<?php if ( pwpp_get_cta_text() ) : ?>
 								<span class="pwpp-post-cta-text">
-									<?php echo esc_html( $pwpp_portfolio['cta-text'] ); ?>
+									<?php echo esc_html( (string) pwpp_get_cta_text() ); ?>
 								</span>
 							<?php endif; ?>
 
