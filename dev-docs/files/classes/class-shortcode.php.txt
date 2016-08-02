@@ -124,7 +124,7 @@ class PWPP_Shortcode {
 							<?php endif; ?>
 							<?php if ( has_post_thumbnail() ) : ?>
 									<a href="<?php the_permalink(); ?>" class="premise-block">
-										<?php pwpp_the_thumbanail(); ?>
+										<?php pwpp_the_thumbnail(); ?>
 									</a>
 							<?php endif; ?>
 							<?php if ( (boolean) $this->a['show-cta'] ) echo get_the_call_to_action(); ?>

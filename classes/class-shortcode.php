@@ -122,7 +122,7 @@ class PWPP_Shortcode {
 									</div>
 								<?php endif; ?>
 								<?php if ( has_post_thumbnail() ) : ?>
-										<?php pwpp_the_thumbanail(); ?>
+										<?php pwpp_the_thumbnail(); ?>
 								<?php endif; ?>
 								<?php if ( (boolean) $this->a['show-cta'] ) echo get_the_call_to_action(); ?>
 								<div class="pwpp-post-excerpt">

@@ -41,7 +41,7 @@ function pwpp_get_thumbnail() {
  *
  * @return string html for featured image in remise prtfolio single post
  */
-function pwpp_the_thumbanail() {
+function pwpp_the_thumbnail() {
 	echo pwpp_get_thumbnail();
 }
 

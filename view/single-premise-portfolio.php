@@ -29,7 +29,13 @@ get_header();
 					<h1><?php the_title(); ?></h1>
 				</div>
 
-				<?php pwpp_the_thumbanail(); ?>
+				<?php if ( '' !== $pwpp_cta_url ) : ?>
+					<a href="<?php echo esc_url( $pwpp_cta_url ); ?>" class="premise-block" target="_blank">
+						<?php pwpp_the_thumbnail(); ?>
+					</a>
+				<?php else : ?>
+					<?php pwpp_the_thumbnail(); ?>
+				<?php endif; ?>
 
 				<!-- The content -->
 				<div class="pwpp-post-content">
