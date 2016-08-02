@@ -122,7 +122,7 @@ class PWPP_Portfolio_CPT {
 				premise_field( 'text', array(
 					'name' => 'premise_portfolio[cta-text]',
 					'placeholder' => 'Go to project',
-					'label' => 'Call to Action URL',
+					'label' => 'Call to Action Text',
 					'context' => 'post',
 				) );
 				?>
