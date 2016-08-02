@@ -15,52 +15,26 @@ function pwpp_get_thumbnail() {
 
 	global $post;
 
-	//  start with an empty string
-	$_link_html = '';
 	// check if there is a post thumbnail
 	if ( has_post_thumbnail() ) {
 
-		// get the image link option
-		$link = (string) premise_get_value( 'premise_portfolio[featured-image-link]', 'post' );
+		// get the image link - link to the cta url
+		$link = (string) premise_get_value( 'premise_portfolio[cta-url]', 'post' );
 
 		// Img url
 		$img_url = (string) wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
 
-		/**
-		 * Check how to link the features image
-		 */
-		/*
-		// Remove for now. This plugin should be basic given that it allows you to modify the whole template.
-		switch( $link ) {
-			case 'no-link' :
-				$_link_html = '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
-				break;
+		$_html = '<div class="pwpp-post-thumbnail-wrapper">';
 
-			case 'attachment' :
-				$_link_html = '<a href="' . esc_url( get_attachment_link( get_post_thumbnail_id( $post->ID ) ) ) . '" class="premise-block">
-					<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>
-				</a>';
-				break;
+			$_html .= ( '' !== $link ) ? '<a href="' . esc_url( $link ) . '" class="premise-block" target="_blank">' : '';
 
-			case 'image' :
-				$_link_html = '<a href="' . esc_url( wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) ) ) . '" class="premise-block">
-					<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>
-				</a>';
-				break;
+				$_html .= '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
 
-			case 'lightbox' :
-				add_action( 'wp_footer', 'pwpp_init_lightbox', 20 ); // insert lightbox to footer
-				$_link_html = '<a href="javascript:void(0);" class="premise-block pwpp-lightbox-link" data-pwpp-lightbox-content="' . esc_url( $img_url ) . '">
-					<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>
-				</a>';
-				break;
+			$_html .= ( '' !== $link ) ? '</a>' : '';
 
-			default :
-				$_link_html = '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
-				break;
-		}*/
+		$_html .= '</div>';
 
-		$_link_html = '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
+		return (string) $_html;
 	}
 
 	// return the link html

@@ -31,10 +31,15 @@ get_header();
 
 				<?php pwpp_the_thumbanail(); ?>
 
+				<!-- The content -->
+				<div class="pwpp-post-content">
+					<?php the_content(); ?>
+				</div>
+
 				<?php if ( '' !== $pwpp_cta_url ) : ?>
 					<!-- The CTA -->
 					<div class="pwpp-post-cta">
-						<a href="<?php echo esc_url( $pwpp_portfolio['cta-url'] ); ?>" class="pwpp-post-cta-url" >
+						<a href="<?php echo esc_url( $pwpp_portfolio['cta-url'] ); ?>" class="pwpp-post-cta-url" target="_blank">
 
 							<?php if ( '' !== $pwpp_cta_text ) : ?>
 								<span class="pwpp-post-cta-text">
@@ -45,11 +50,6 @@ get_header();
 						</a>
 					</div>
 				<?php endif; ?>
-
-				<!-- The content -->
-				<div class="pwpp-post-content">
-					<?php the_content(); ?>
-				</div>
 
 			<?php endwhile;
 

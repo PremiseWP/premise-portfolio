@@ -13,11 +13,10 @@
 }
 
 #pwpp-single-portfolio .pwpp-container {
-	max-width: 1200px;
+	max-width: 100%;
 	margin: 0 auto;
 	padding: 0 15px;
 }
-
 
 #pwpp-single-portfolio .pwpp-post-title {
 	padding: 25px 0;
