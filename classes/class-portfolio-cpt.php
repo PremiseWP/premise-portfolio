@@ -240,5 +240,3 @@ class PWPP_Portfolio_CPT {
 		return $length;
 	}
 }
-
-?>

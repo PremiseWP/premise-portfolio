@@ -39,7 +39,11 @@ define( 'PWPP_URL', plugin_dir_url( __FILE__ ) );
 // Must use 'plugins_loaded' hook.
 add_action( 'plugins_loaded', array( Premise_Portfolio::get_instance(), 'init' ) );
 
+// Install Plugin
+register_activation_hook( __FILE__, array( 'Premise_Portfolio', 'do_install' ) );
 
+// Uninstall Plugin.
+register_uninstall_hook( __FILE__, array( 'Premise_Portfolio', 'do_uninstall' ) );
 
 /**
  * Load Plugin!
@@ -178,6 +182,46 @@ class Premise_Portfolio {
 
 		add_filter( 'excerpt_length', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_excerpt_trim' ) );
 	}
+
+
+
+	/**
+	 * Install
+	 *
+	 * @param boolean $networkwide Network wide?.
+	 */
+	static function do_install( $networkwide ) {
+
+		/**
+		 * Flush rewrite rules.
+		 *
+		 * Register Custom Post Type BEFORE flushing rewrite rules!
+		 *
+		 * @link https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
+		 */
+		require_once PWPP_PATH . 'classes/class-portfolio-cpt.php';
+
+		PWPP_Portfolio_CPT::get_instance();
+
+		flush_rewrite_rules();
+	}
+
+
+
+
+
+	/**
+	 * Uninstall
+	 *
+	 * @param boolean $networkwide Network wide?.
+	 */
+	static function do_uninstall( $networkwide ) {
+
+		// Flush rewrite rules.
+		// https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
+		flush_rewrite_rules();
+	}
+
 
 
 
