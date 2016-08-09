@@ -25,27 +25,6 @@ class PWPP_Options_Page {
 
 
 	/**
-	 * Plugin url
-	 *
-	 * @var string
-	 */
-	public $plugin_url = PLUGIN_URL;
-
-
-
-
-	/**
-	 * Plugin path
-	 *
-	 * @var strin
-	 */
-	public $plugin_path = PLUGIN_PATH;
-
-
-
-
-
-	/**
 	 * Constructor. Intentionally left empty and public.
 	 *
 	 * @see 	init()

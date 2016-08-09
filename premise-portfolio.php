@@ -66,27 +66,6 @@ class Premise_Portfolio {
 
 
 	/**
-	 * Plugin url
-	 *
-	 * @var string
-	 */
-	public $plugin_url = PWPP_URL;
-
-
-
-
-	/**
-	 * Plugin path
-	 *
-	 * @var strin
-	 */
-	public $plugin_path = PWPP_PATH;
-
-
-
-
-
-	/**
 	 * Constructor. Intentionally left empty and public.
 	 *
 	 * @see 	init()
