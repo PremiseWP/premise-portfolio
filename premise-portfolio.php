@@ -190,7 +190,7 @@ class Premise_Portfolio {
 	 *
 	 * @return void does not return anything
 	 */
-	public function resquire_premise() {
+	public function require_premise() {
 
 		$plugins = array(
 			array(
