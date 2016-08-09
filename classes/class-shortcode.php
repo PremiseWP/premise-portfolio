@@ -76,9 +76,6 @@ class PWPP_Shortcode {
 			'posts_per_page' => -1,
 
 		) );
-
-		// reset the query
-		wp_reset_query();
 	}
 
 
@@ -107,8 +104,9 @@ class PWPP_Shortcode {
 		self::$params = $this->a = shortcode_atts( $this->defaults, $atts, 'pwpp_portfolio' );
 
 		// Allow themes to override the tamllate that gets loaded
-		if ( '' !== $new_loop_tmpl = locate_template( 'loop-premise-portfolio.php' ) )
+		if ( '' !== ( $new_loop_tmpl = locate_template( 'loop-premise-portfolio.php' ) ) ) {
 			$this->loop_tmpl = $new_loop_tmpl;
+		}
 
 		return $this->do_loop();
 	}
