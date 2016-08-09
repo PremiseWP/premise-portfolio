@@ -16,7 +16,7 @@ if ( pwpp_have_posts() ) :
 		while ( pwpp_have_posts() ) {
 			pwpp_the_post();
 			?>
-			<div class="pwpp-item <? echo pwpp_get_grid_param(); ?>">
+			<div class="pwpp-item <?php echo pwpp_get_grid_param(); ?>">
 				<a href="<?php the_permalink(); ?>" class="premise-block">
 					<div class="pwpp-item-inner">
 						<?php if ( '' !== get_the_title() ) : ?>
@@ -34,8 +34,8 @@ if ( pwpp_have_posts() ) :
 					</div>
 				</a>
 			</div>
-			<?
+			<?php
 		} ?>
 	</div>
 </div>
-<?php endif; ?>
+<?php endif;
