@@ -32,5 +32,8 @@ Go to <a href="http://plugins.premisewp.com/premise-portfolio/premise-portfolio/
 
 == Changelog ==
 
+= 1.1.0 =
+* Add tags and categories to Portfolio Items CPT & single template
+
 = 1.0.0 =
 * New version
