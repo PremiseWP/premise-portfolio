@@ -35,6 +35,16 @@ get_header();
 					<?php the_content(); ?>
 				</div>
 
+				<!-- The category -->
+				<div class="pwpp-post-category">
+					<?php the_terms( get_the_id(), 'premise-portfolio-category' ); ?>
+				</div>
+
+				<!-- The tags -->
+				<div class="pwpp-post-tags">
+					<?php the_terms( get_the_id(), 'premise-portfolio-tag' ); ?>
+				</div>
+
 				<?php if ( pwpp_get_cta_url() ) : ?>
 					<!-- The CTA -->
 					<div class="pwpp-post-cta">

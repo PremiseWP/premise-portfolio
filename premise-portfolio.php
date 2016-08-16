@@ -39,7 +39,11 @@ define( 'PWPP_URL', plugin_dir_url( __FILE__ ) );
 // Must use 'plugins_loaded' hook.
 add_action( 'plugins_loaded', array( Premise_Portfolio::get_instance(), 'init' ) );
 
+// Install Plugin
+register_activation_hook( __FILE__, array( 'Premise_Portfolio', 'do_install' ) );
 
+// Uninstall Plugin.
+register_uninstall_hook( __FILE__, array( 'Premise_Portfolio', 'do_uninstall' ) );
 
 /**
  * Load Plugin!
@@ -57,27 +61,6 @@ class Premise_Portfolio {
 	 * @var object
 	 */
 	protected static $instance = null;
-
-
-
-
-	/**
-	 * Plugin url
-	 *
-	 * @var string
-	 */
-	public $plugin_url = PWPP_URL;
-
-
-
-
-	/**
-	 * Plugin path
-	 *
-	 * @var strin
-	 */
-	public $plugin_path = PWPP_PATH;
-
 
 
 
@@ -169,7 +152,9 @@ class Premise_Portfolio {
 		// add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
 
 		// Initiate and register our custom post type
-		add_action( 'init', array( PWPP_Portfolio_CPT::get_instance(), 'init' ) );
+		$portfolio_cpt = PWPP_Portfolio_CPT::get_instance();
+
+		$portfolio_cpt->init();
 
 		// register our shortcode
 		add_shortcode( 'pwpp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
@@ -177,7 +162,67 @@ class Premise_Portfolio {
 		add_filter( 'template_include', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_page_template' ), 99 );
 
 		add_filter( 'excerpt_length', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_excerpt_trim' ) );
+
+		// Add rewrite flush rules on init with a higher priority than 10.
+		add_action( 'init', array( $this, 'maybe_flush_rules' ), 11 );
 	}
+
+
+
+
+
+	/**
+	 * Flush rewrite rules if our plugin was just activated.
+	 */
+	public function maybe_flush_rules() {
+		// If this option exists we just activated the plugin,
+		// And if Premise-WP plugin activated too, flush rewrite rules.
+		if ( get_option( '_pwpp_activation_happened' )
+			&& class_exists( 'PremiseCPT' ) ) {
+
+			flush_rewrite_rules();
+
+			// Delete the option so we dont flush rules again.
+			delete_option( '_pwpp_activation_happened' );
+		}
+	}
+
+
+
+
+	/**
+	 * Install
+	 *
+	 * @param boolean $networkwide Network wide?.
+	 */
+	static function do_install( $networkwide ) {
+
+		// Save an option in the DB when this plugin gets installed to flush rewrite rules on init.
+		if ( ! get_option( '_pwpp_activation_happened' ) ) {
+
+			add_option( '_pwpp_activation_happened', true );
+		}
+	}
+
+
+
+
+
+	/**
+	 * Uninstall
+	 *
+	 * @param boolean $networkwide Network wide?.
+	 */
+	static function do_uninstall( $networkwide ) {
+
+		// Remove rewrite rules check from DB.
+		delete_option( '_vmenu_activation_happened' );
+
+		// Flush rewrite rules.
+		// https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
+		flush_rewrite_rules();
+	}
+
 
 
 
@@ -190,7 +235,7 @@ class Premise_Portfolio {
 	 *
 	 * @return void does not return anything
 	 */
-	public function resquire_premise() {
+	public function require_premise() {
 
 		$plugins = array(
 			array(

@@ -36,7 +36,9 @@
 }
 
 #pwpp-single-portfolio .pwpp-post-thumbnail,
-#pwpp-single-portfolio .pwpp-post-content {
+#pwpp-single-portfolio .pwpp-post-content,
+#pwpp-single-portfolio .pwpp-post-category,
+#pwpp-single-portfolio .pwpp-post-tags {
 	display: block;
 	margin-bottom: 30px;
 }
@@ -74,7 +76,8 @@
 	line-height: 40px;
 	padding: 5px 10px;
 	white-space: nowrap;
-	background-color: rgba( 255, 255, 255, 0.9 );;
+	background-color: #fff;
+	background-color: rgba( 255, 255, 255, 0.9 );
 }
 
 #pwpp-portfolio-grid .pwpp-item .pwpp-post-title h2 {
@@ -105,6 +108,7 @@
 	height: 100%;
 	padding: 60px 10px 10px 10px; /* Account for 50px the thumbnails slides down for plus the 10px additional padding across all sides */
 	transition: top .4s .4s ease-in-out;
+	background-color: #fff;
 	background-color: rgba( 255, 255, 255, 0.8 );
 	overflow: auto;
 	box-sizing: border-box;
@@ -116,7 +120,7 @@
 }
 
 #pwpp-portfolio-grid .pwpp-item:hover .pwpp-post-excerpt {
-	top: 0px;
+	top: 0;
 	z-index: 8;
 }
 

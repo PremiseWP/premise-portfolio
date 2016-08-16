@@ -39,20 +39,44 @@ class PWPP_Portfolio_CPT {
 	 * @since 	1.0.0
 	 */
 	public function __construct() {
-		new PremiseCPT( array(
-			'plural' => 'Portfolio Items',
-			'singular' => 'Portfolio Item',
-			'post_type_name' => 'premise_portfolio',
-			'slug' => 'premise-portfolio',
-		), array(
-			'supports' => array(
-				'title',
-				'editor',
-				'auhtor',
-				'thumbnail',
-				'custom-fields',
-			),
-		) );
+		if ( class_exists( 'PremiseCPT' ) ) {
+
+			$portfolio_cpt = new PremiseCPT( array(
+				'plural' => 'Portfolio Items',
+				'singular' => 'Portfolio Item',
+				'post_type_name' => 'premise_portfolio',
+				'slug' => 'premise-portfolio',
+			), array(
+				'supports' => array(
+					'title',
+					'editor',
+					'auhtor',
+					'thumbnail',
+					'custom-fields',
+				),
+			) );
+
+			$portfolio_cpt->register_taxonomy(
+				array(
+					'taxonomy_name' => 'premise-portfolio-category',
+					'singular' => __( 'Portfolio Category', 'pwpp' ),
+					'plural' => __( 'Portfolio Categories', 'pwpp' ),
+					'slug' => 'premise-portfolio-category',
+				)
+			);
+
+			$portfolio_cpt->register_taxonomy(
+				array(
+					'taxonomy_name' => 'premise-portfolio-tag',
+					'singular' => __( 'Portfolio Tag', 'psmb' ),
+					'plural' => __( 'Portfolio Tags', 'psmb' ),
+					'slug' => 'premise-portfolio-tag',
+				),
+				array(
+					'hierarchical' => false, // No sub-tags.
+				)
+			);
+		}
 	}
 
 
@@ -240,5 +264,3 @@ class PWPP_Portfolio_CPT {
 		return $length;
 	}
 }
-
-?>
