@@ -34,6 +34,7 @@ Go to <a href="http://plugins.premisewp.com/premise-portfolio/premise-portfolio/
 
 = 1.1.0 =
 * Add tags and categories to Portfolio Items CPT & single template
+* Fix 404 error for Portfolio Items CPT
 
 = 1.0.0 =
 * New version
