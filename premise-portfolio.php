@@ -152,7 +152,9 @@ class Premise_Portfolio {
 		// add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
 
 		// Initiate and register our custom post type
-		add_action( 'init', array( PWPP_Portfolio_CPT::get_instance(), 'init' ) );
+		$portfolio_cpt = PWPP_Portfolio_CPT::get_instance();
+
+		$portfolio_cpt->init();
 
 		// register our shortcode
 		add_shortcode( 'pwpp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
@@ -160,7 +162,31 @@ class Premise_Portfolio {
 		add_filter( 'template_include', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_page_template' ), 99 );
 
 		add_filter( 'excerpt_length', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_excerpt_trim' ) );
+
+		// Add rewrite flush rules on init with a higher priority than 10.
+		add_action( 'init', array( $this, 'maybe_flush_rules' ), 11 );
 	}
+
+
+
+
+
+	/**
+	 * Flush rewrite rules if our plugin was just activated.
+	 */
+	public function maybe_flush_rules() {
+		// If this option exists we just activated the plugin,
+		// And if Premise-WP plugin activated too, flush rewrite rules.
+		if ( get_option( '_pwpp_activation_happened' )
+			&& class_exists( 'PremiseCPT' ) ) {
+
+			flush_rewrite_rules();
+
+			// Delete the option so we dont flush rules again.
+			delete_option( '_pwpp_activation_happened' );
+		}
+	}
+
 
 
 
@@ -171,18 +197,11 @@ class Premise_Portfolio {
 	 */
 	static function do_install( $networkwide ) {
 
-		/**
-		 * Flush rewrite rules.
-		 *
-		 * Register Custom Post Type BEFORE flushing rewrite rules!
-		 *
-		 * @link https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
-		 */
-		require_once PWPP_PATH . 'classes/class-portfolio-cpt.php';
+		// Save an option in the DB when this plugin gets installed to flush rewrite rules on init.
+		if ( ! get_option( '_pwpp_activation_happened' ) ) {
 
-		PWPP_Portfolio_CPT::get_instance();
-
-		flush_rewrite_rules();
+			add_option( '_pwpp_activation_happened', true );
+		}
 	}
 
 
@@ -195,6 +214,9 @@ class Premise_Portfolio {
 	 * @param boolean $networkwide Network wide?.
 	 */
 	static function do_uninstall( $networkwide ) {
+
+		// Remove rewrite rules check from DB.
+		delete_option( '_vmenu_activation_happened' );
 
 		// Flush rewrite rules.
 		// https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
