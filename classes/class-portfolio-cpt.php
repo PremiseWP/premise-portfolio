@@ -40,7 +40,8 @@ class PWPP_Portfolio_CPT {
 	 */
 	public function __construct() {
 		if ( class_exists( 'PremiseCPT' ) ) {
-			new PremiseCPT( array(
+
+			$portfolio_cpt = new PremiseCPT( array(
 				'plural' => 'Portfolio Items',
 				'singular' => 'Portfolio Item',
 				'post_type_name' => 'premise_portfolio',
@@ -54,6 +55,27 @@ class PWPP_Portfolio_CPT {
 					'custom-fields',
 				),
 			) );
+
+			$portfolio_cpt->register_taxonomy(
+				array(
+					'taxonomy_name' => 'premise-portfolio-category',
+					'singular' => __( 'Portfolio Category', 'pwpp' ),
+					'plural' => __( 'Portfolio Categories', 'pwpp' ),
+					'slug' => 'premise-portfolio-category',
+				)
+			);
+
+			$portfolio_cpt->register_taxonomy(
+				array(
+					'taxonomy_name' => 'premise-portfolio-tag',
+					'singular' => __( 'Portfolio Tag', 'psmb' ),
+					'plural' => __( 'Portfolio Tags', 'psmb' ),
+					'slug' => 'premise-portfolio-tag',
+				),
+				array(
+					'hierarchical' => false, // No sub-tags.
+				)
+			);
 		}
 	}
 
@@ -242,5 +264,3 @@ class PWPP_Portfolio_CPT {
 		return $length;
 	}
 }
-
-?>
