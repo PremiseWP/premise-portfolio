@@ -39,20 +39,22 @@ class PWPP_Portfolio_CPT {
 	 * @since 	1.0.0
 	 */
 	public function __construct() {
-		new PremiseCPT( array(
-			'plural' => 'Portfolio Items',
-			'singular' => 'Portfolio Item',
-			'post_type_name' => 'premise_portfolio',
-			'slug' => 'premise-portfolio',
-		), array(
-			'supports' => array(
-				'title',
-				'editor',
-				'auhtor',
-				'thumbnail',
-				'custom-fields',
-			),
-		) );
+		if ( class_exists( 'PremiseCPT' ) ) {
+			new PremiseCPT( array(
+				'plural' => 'Portfolio Items',
+				'singular' => 'Portfolio Item',
+				'post_type_name' => 'premise_portfolio',
+				'slug' => 'premise-portfolio',
+			), array(
+				'supports' => array(
+					'title',
+					'editor',
+					'auhtor',
+					'thumbnail',
+					'custom-fields',
+				),
+			) );
+		}
 	}
 
 
