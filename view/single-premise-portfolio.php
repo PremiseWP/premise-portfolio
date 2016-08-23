@@ -30,6 +30,8 @@ get_header();
 					<?php pwpp_the_thumbnail(); ?>
 				<?php endif; ?>
 
+				<?php pwpp_the_custom_fields(); ?>
+
 				<!-- The content -->
 				<div class="pwpp-post-content">
 					<?php the_content(); ?>

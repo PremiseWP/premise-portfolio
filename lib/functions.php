@@ -153,3 +153,58 @@ function pwpp_get_cta_text() {
 	global $post;
 	return premise_get_value( 'premise_portfolio[cta-text]', array( 'context' => 'post', 'id' => $post->ID ) );
 }
+
+
+/**
+ * get the custom fields for a portfolio item. must be called within the loop
+ * 
+ * @return array|boolean array of custom field keys and values ( key => value ). false if nothing is found
+ */
+function pwpp_get_custom_fields() {
+	$_cust_fields = premise_get_value( '', 'post' );
+	
+	if( ! $_cust_fields )
+		return false;
+
+	$cust_fields = array();
+	foreach ( (array) $_cust_fields as $k => $v ) {
+		if ( preg_match( '/^_/', $k ) 
+			|| 'premise_portfolio' == $k )
+				continue;
+
+		$cust_fields[esc_html( $k )] = esc_html( $v[0] );
+	}
+
+	return $_cust_fields ? $cust_fields : false;
+}
+
+
+
+function pwpp_the_custom_fields( $format = 'dl' ) {
+
+	if ( $cf = pwpp_get_custom_fields() ) {
+
+		$list = '<div class="pwpp-custom-fields-container">';
+
+			$list .= ( 'dl' !== $format ) ? '<table>' : '<dl>';
+			foreach ($cf as $k => $v) {
+				$key   = esc_html( $k );
+				$value = esc_html( $v );
+
+				$tags = ( 'dl' !== $format ) ? array( 'td', 'td' ) : array( 'dt', 'dd' );
+
+				$list .= ( 'dl' !== $format ) ? '<tr>' : '';
+
+				$list .= '<'.$tags[0].'>'.$key.'</'.$tags[0].'>
+				  	<'.$tags[1].'>'.$value.'</'.$tags[1].'>';
+
+				$list .= ( 'dl' !== $format ) ? '</tr>' : '';
+
+			}
+			$list .= ( 'dl' !== $format ) ? '</table>' : '</dl>';
+
+		$list .= '</div>';
+
+		echo $list;
+	}
+}

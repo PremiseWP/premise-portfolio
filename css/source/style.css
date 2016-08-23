@@ -35,6 +35,10 @@
 	background-position: center;
 }
 
+#pwpp-single-portfolio .pwpp-custom-fields-container {
+	display: inline-block;
+}
+
 #pwpp-single-portfolio .pwpp-post-thumbnail,
 #pwpp-single-portfolio .pwpp-post-content,
 #pwpp-single-portfolio .pwpp-post-category,
