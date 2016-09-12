@@ -16,7 +16,7 @@ if ( pwpp_have_posts() ) :
 		while ( pwpp_have_posts() ) {
 			pwpp_the_post();
 			?>
-			<div class="pwpp-item <?php echo pwpp_get_grid_param(); ?>">
+			<div <?php pwpp_loop_item_attrs(); ?>>
 				<a href="<?php the_permalink(); ?>" class="premise-block">
 					<div class="pwpp-item-inner">
 						<?php if ( '' !== get_the_title() ) : ?>
@@ -24,9 +24,7 @@ if ( pwpp_have_posts() ) :
 								<h2><?php the_title(); ?></h2>
 							</div>
 						<?php endif; ?>
-						<?php if ( has_post_thumbnail() ) : ?>
-								<?php pwpp_the_thumbnail(); ?>
-						<?php endif; ?>
+						<?php pwpp_the_thumbnail( 'loop' ); ?>
 						<?php if ( (boolean) $this->a['show-cta'] ) echo pwpp_get_the_call_to_action(); ?>
 						<div class="pwpp-post-excerpt">
 							<?php the_excerpt(); ?>

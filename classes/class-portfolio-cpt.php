@@ -54,6 +54,7 @@ class PWPP_Portfolio_CPT {
 					'thumbnail',
 					'custom-fields',
 				),
+				'menu_icon' => 'dashicons-portfolio',
 			) );
 
 			$portfolio_cpt->register_taxonomy(
@@ -159,6 +160,29 @@ class PWPP_Portfolio_CPT {
 					'label' => 'Enter number of words',
 					'context' => 'post',
 					'style' => 'max-width: 60px;',
+				) );
+				?>
+			</div>
+
+			<div class="col2">
+				<h4>Grid View Options</h4>
+				<p><i class="description">When viewed from the portfolio grid, by default this portfolio item will use the featured image as the full background. To change what image is displayed on hover or normal states upload them here. Whichever is left blank will default to the featured image.<br>
+				<b>Hint:</b> You can also enter a hex color i.e. <code>#376645</code>.</i></p>
+				<?php
+				// the url
+				premise_field( 'wp_media', array(
+					'name' => 'premise_portfolio[grid-view][normal-bg]',
+					'label' => 'Nomral State Background',
+					'placeholder' => 'Upload an image',
+					'context' => 'post',
+				) );
+
+				// the text
+				premise_field( 'wp_media', array(
+					'name' => 'premise_portfolio[grid-view][hover-bg]',
+					'placeholder' => '#376645',
+					'label' => 'Hover State Background',
+					'context' => 'post',
 				) );
 				?>
 			</div>

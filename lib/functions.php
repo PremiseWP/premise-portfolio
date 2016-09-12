@@ -7,31 +7,74 @@
 
 
 /**
- * Must be ran within the Loop
+ * Must be called from within the Loop
  *
  * @return string html for the featured image
  */
-function pwpp_get_thumbnail() {
+function pwpp_get_loop_thumbnail() {
 
 	global $post;
+	$_html = '';
 
-	// check if there is a post thumbnail
-	if ( has_post_thumbnail() ) {
+	$img_url =  premise_get_value( 'premise_portfolio[grid-view][normal-bg]', 'post' ) ?
+					(string) premise_get_value( 'premise_portfolio[grid-view][normal-bg]', 'post' ) :
+						(string) wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
 
-		// Img url
-		$img_url = (string) wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
+	if ( $background = pwpp_validate_background( $img_url ) )
+		$_html = '<div class="pwpp-post-thumbnail" style="'.$background.'"></div>';
 
-		$_html = '<div class="pwpp-post-thumbnail-wrapper">';
+	return (string) $_html;
+}
 
-			$_html .= '<div class="pwpp-post-thumbnail" style="background-image: url( ' . esc_url( $img_url ) . ' );"></div>';
 
-		$_html .= '</div>';
+/**
+ * validates whether a background is usable (image url or hex color) abd returns it
+ * as a string. Return false if background is not validated.
+ *
+ * @param  string $bg background to validate
+ * @return mixed      background validated. false if not valid
+ */
+function pwpp_validate_background( $bg = '' ) {
+	if ( ! empty( $bg ) ) {
+		if ( preg_match('/^.*(jpg|png|jpeg|gif)$/i', $bg ) ) {
+			return 'background-image: url( ' . esc_url( $bg ) . ' );';
+		}
+		if ( preg_match('/^#([0-9a-zA-Z]{3,6})/', $bg, $match ) ) {
+			$match[1] = (string) ( 6 > strlen( $match[1] ) ) ? substr( $match[1].$match[1], 0, 6 ) : $match[1];
+			return 'background-color: ' . esc_attr( '#' . $match[1] ) . ';';
+		}
+	}
+	return false;
+}
 
-		return (string) $_html;
+
+/**
+ * get the html attributes for portfolio item
+ *
+ * @return string html for portfolio item attributes
+ */
+function pwpp_get_thumbnail_attrs( $classes = '' ) {
+	$class = 'class="';
+	$attrs = '';
+	$gview = premise_get_value( 'premise_portfolio[grid-view]', 'post' );
+
+	if ( $gview && is_array( $gview ) ) {
+		$normal = isset( $gview['normal-bg'] )
+					&& ! empty( $gview['normal-bg'] )
+						? ' data-normal-state="' . esc_attr( $gview['normal-bg'] ) . '"'
+							: '';
+		$hover  = isset( $gview['hover-bg'] )
+					&& ! empty( $gview['hover-bg'] )
+						? ' data-hover-state="' . esc_attr( $gview['hover-bg']  ) . '"'
+							: '';
+
+		$attrs .= ( ! empty( $normal ) || ! empty( $hover ) ) ? $normal.$hover : '';
+		$class .= ( ! empty( $hover ) ) ? ''             : ' pwpp-loop-default-animation';
 	}
 
-	// return the link html
-	return (string) $_link_html;
+	$class .= ' ' . esc_attr( (string) $classes ) . '"';
+
+	return $class.$attrs;
 }
 
 
@@ -41,8 +84,30 @@ function pwpp_get_thumbnail() {
  *
  * @return string html for featured image in remise prtfolio single post
  */
-function pwpp_the_thumbnail() {
-	echo pwpp_get_thumbnail();
+function pwpp_the_thumbnail( $view = 'post' ) {
+	global $post;
+	$url   = '';
+	$bg    = '';
+	$_html = '';
+
+	if ( 'post' == $view && has_post_thumbnail() ) {
+		$url = (string) wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
+		$bg = 'background-image: url( ' . esc_url( $url ) . ' );';
+	}
+	else {
+		if ( premise_get_value( 'premise_portfolio[grid-view][normal-bg]', 'post' ) ) {
+			$url = (string) premise_get_value( 'premise_portfolio[grid-view][normal-bg]', 'post' );
+		}
+		elseif ( has_post_thumbnail() ) {
+			$url = (string) wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
+		}
+		$bg = pwpp_validate_background( $url );
+	}
+
+	$_html = '<div class="pwpp-post-thumbnail-wrapper">
+				<div class="pwpp-post-thumbnail" style="' . $bg . '"></div>
+			</div>';
+	echo $_html;
 }
 
 
@@ -103,6 +168,11 @@ function pwpp_get_the_call_to_action() {
 }
 
 
+function pwpp_loop_item_attrs() {
+	echo pwpp_get_thumbnail_attrs( 'pwpp-item ' . pwpp_get_grid_param() );
+}
+
+
 /**
  * get the grid parametter used in the shortcode being displayed
  *
@@ -157,18 +227,18 @@ function pwpp_get_cta_text() {
 
 /**
  * get the custom fields for a portfolio item. must be called within the loop
- * 
+ *
  * @return array|boolean array of custom field keys and values ( key => value ). false if nothing is found
  */
 function pwpp_get_custom_fields() {
 	$_cust_fields = premise_get_value( '', 'post' );
-	
+
 	if( ! $_cust_fields )
 		return false;
 
 	$cust_fields = array();
 	foreach ( (array) $_cust_fields as $k => $v ) {
-		if ( preg_match( '/^_/', $k ) 
+		if ( preg_match( '/^_/', $k )
 			|| 'premise_portfolio' == $k )
 				continue;
 
