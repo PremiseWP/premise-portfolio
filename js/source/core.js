@@ -3,6 +3,6 @@
  */
 ( function( $ ) {
 
-	// JS will go here
+
 
 } ( jQuery ) );
