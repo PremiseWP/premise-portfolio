@@ -69,7 +69,7 @@ function pwpp_get_thumbnail_attrs( $classes = '' ) {
 							: '';
 
 		$attrs .= ( ! empty( $normal ) || ! empty( $hover ) ) ? $normal.$hover : '';
-		$class .= ( ! empty( $hover ) ) ? ''             : ' pwpp-loop-default-animation';
+		$class .= ( ! empty( $hover ) ) ? 'pwpp-loop-hover-animation'          : ' pwpp-loop-default-animation';
 	}
 
 	$class .= ' ' . esc_attr( (string) $classes ) . '"';
