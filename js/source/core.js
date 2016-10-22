@@ -11,8 +11,13 @@
 
 
 		function pwppLoopAnimateOnHover() {
+			var tfgOriginalbackground = '';
 			pwppLoopHoverAnimation.mouseenter( function() {
 				var hover = $(this).attr( 'data-hover-state' );
+
+				tfgOriginalbackground = $(this).find( '.pwpp-post-thumbnail' ).attr( 'style' );
+
+				console.log( tfgOriginalbackground );
 
 				if ( '' !== hover ) {
 					if ( hover.match( '#' ) ) {
@@ -31,20 +36,18 @@
 			} );
 
 			pwppLoopHoverAnimation.mouseleave( function() {
-				var hover = $(this).attr( 'data-normal-state' );
+				var hover = tfgOriginalbackground;
 
-				if ( '' !== hover ) {
-					if ( hover.match( '#' ) ) {
-						$(this).find( '.pwpp-post-thumbnail' ).css({
-							'background-image': '',
-							'background-color': hover,
-						} );
-					}
-					else {
+				if ( '' !== tfgOriginalbackground ) {
+					if ( tfgOriginalbackground.match( 'background-image' ) ) {
+						hover = tfgOriginalbackground.trim().substring( tfgOriginalbackground.indexOf( '(' ) + 1, tfgOriginalbackground.length -2 );
 						$(this).find( '.pwpp-post-thumbnail' ).css({
 							'background-image': 'url('+hover+')',
 							'background-color': '',
 						} );
+						console.log( hover );
+					}
+					else {
 					}
 				}
 			} );

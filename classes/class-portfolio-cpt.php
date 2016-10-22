@@ -114,8 +114,11 @@ class PWPP_Portfolio_CPT {
 	 * @param string $post_type the cusotm post type currently loaded
 	 */
 	public function add_meta_boxes( $post_type ) {
-		if ( in_array( $post_type, $this->post_type ) )
+		if ( in_array( $post_type, $this->post_type ) ) {
 			add_meta_box( 'pwpp-cpt-meta-box', 'Portfolio Item Options', array( $this, 'render_meta_box' ), 'premise_portfolio', 'normal', 'high' );
+
+			add_meta_box( 'pwpp-cpt-meta-box-custom-fields', 'Portfolio Item Custom Fields', array( $this, 'render_meta_box_fields' ), 'premise_portfolio', 'normal', 'high' );
+		}
 	}
 
 
@@ -187,6 +190,64 @@ class PWPP_Portfolio_CPT {
 				?>
 			</div>
 		</div>
+		<?php
+	}
+
+
+	public function render_meta_box_fields() {
+		?>
+		<div id="" class="premise-row pwpp-custom-fields">
+			<div class="span4"><?php
+				premise_field( 'text', array(
+					'name' => 'premise_portfolio[meta][keys][]',
+					'label' => 'Name',
+				) ); ?>
+			</div>
+
+			<div class="span7"><?php
+				premise_field( 'textarea', array(
+					'name' => 'premise_portfolio[meta][values][]',
+					'label' => 'Value',
+				) ); ?>
+			</div>
+
+			<div class="span1 pwpp-fields-controller">
+				<!-- <a href="javascript:;" class="pwpp-new-field">
+					<i class="fa fa-plus"></i>
+				</a>
+				<a href="javascript:;" class="pwpp-remove-field">
+					<i class="fa fa-minus"></i>
+				</a> -->
+			</div>
+		</div>
+		<script>
+			(function($){
+				$(document).ready(function(){
+					$('.pwpp-custom-fields').wrap( '<div class="pwpp-duplicate"></div>' );
+
+					var wrapper = $( '.pwpp-duplicate' ),
+					count = wrapper.children().length;
+
+					wrapper.append( '<div class="premise-clear premise-align-center"><a href="javascript:;" class="pwpp-duplicate-it"><i class="fa fa-plus"></i></a>' );
+
+					// if we have more than one child
+					if ( 1 < count ) {
+						for (var i = count.length - 1; i >= 1; i--) {
+							console.log( wrapper.children()[i] );
+						}
+					}
+					// we only have 1 child
+					else {
+
+					}
+
+					var btn = $( '.pwpp-duplicate-it' );
+					btn.click( function() {
+						console.log( wrapper.last().children() );
+					} );
+				});
+			}(jQuery));
+		</script>
 		<?php
 	}
 
