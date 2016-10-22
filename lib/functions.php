@@ -37,7 +37,7 @@ function pwpp_get_loop_thumbnail() {
 function pwpp_validate_background( $bg = '' ) {
 	if ( ! empty( $bg ) ) {
 		if ( preg_match('/^.*(jpg|png|jpeg|gif)$/i', $bg ) ) {
-			return 'background-image: url( ' . esc_url( $bg ) . ' );';
+			return 'background-image: url(' . esc_url( $bg ) . ');'; // this hsould have no spacing except after ':'
 		}
 		if ( preg_match('/^#([0-9a-zA-Z]{3,6})/', $bg, $match ) ) {
 			$match[1] = (string) ( 6 > strlen( $match[1] ) ) ? substr( $match[1].$match[1], 0, 6 ) : $match[1];
@@ -68,8 +68,12 @@ function pwpp_get_thumbnail_attrs( $classes = '' ) {
 						? ' data-hover-state="' . esc_attr( $gview['hover-bg']  ) . '"'
 							: '';
 
+
 		$attrs .= ( ! empty( $normal ) || ! empty( $hover ) ) ? $normal.$hover : '';
-		$class .= ( ! empty( $hover ) ) ? 'pwpp-loop-hover-animation'          : ' pwpp-loop-default-animation';
+		$class .= ( ! empty( $hover ) ) ? ' pwpp-loop-hover-animation'          : ' pwpp-loop-default-animation';
+	}
+	else {
+		$class .= ' pwpp-loop-default-animation';
 	}
 
 	$class .= ' ' . esc_attr( (string) $classes ) . '"';
