@@ -8,32 +8,43 @@
  *
  * @package premise-portfolio\view
  */
+get_header(); ?>
 
-if ( pwpp_have_posts() ) :
-?>
-<div id="pwpp-portfolio-grid">
-	<div class="premise-row"><?php
-		while ( pwpp_have_posts() ) {
-			pwpp_the_post();
-			?>
-			<div <?php pwpp_loop_item_attrs(); ?>>
-				<a href="<?php the_permalink(); ?>" class="premise-block">
-					<div class="pwpp-item-inner">
-						<?php if ( '' !== get_the_title() ) : ?>
-							<div class="pwpp-post-title">
-								<h2><?php the_title(); ?></h2>
-							</div>
-						<?php endif; ?>
-						<?php pwpp_the_thumbnail( 'loop' ); ?>
-						<?php if ( (boolean) $this->a['show-cta'] ) echo pwpp_get_the_call_to_action(); ?>
-						<div class="pwpp-post-excerpt">
-							<?php the_excerpt(); ?>
+<section id="pwpp-single-portfolio" class="premise-block premise-clear-float">
+
+	<div class="pwpp-container premise-clear-float">
+
+		<?php
+		if ( pwpp_have_posts() ) : ?>
+			<div id="pwpp-portfolio-grid">
+				<div class="premise-row"><?php
+					while ( pwpp_have_posts() ) { pwpp_the_post(); ?>
+
+						<div <?php pwpp_loop_item_attrs(); ?>>
+							<a href="<?php the_permalink(); ?>" class="premise-block">
+								<div class="pwpp-item-inner">
+									<?php if ( '' !== get_the_title() ) : ?>
+										<div class="pwpp-post-title">
+											<h2><?php the_title(); ?></h2>
+										</div>
+									<?php endif; ?>
+									<?php pwpp_the_thumbnail( 'loop' ); ?>
+									<?php // echo pwpp_get_the_call_to_action(); ?>
+									<div class="pwpp-post-excerpt">
+										<?php the_excerpt(); ?>
+									</div>
+								</div>
+							</a>
 						</div>
-					</div>
-				</a>
+
+					<?php
+					} ?>
+				</div>
 			</div>
-			<?php
-		} ?>
+		<?php endif; ?>
+
 	</div>
-</div>
-<?php endif;
+
+</section>
+
+<?php get_footer(); ?>

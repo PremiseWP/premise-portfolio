@@ -80,7 +80,7 @@ class PWPP_Options_Page {
 		new Premise_Options(
 			array(                   // pass the arguments expected by add_menu_page()
 				'title'      => 'Premise Portfolio Options Page',
-				'menu_title' => 'Portfolio',
+				'menu_title' => 'Portfolio Settings',
 				'menu_slug'  => 'premise-portfolio',
 				'callback'   => array( $this, 'render_page' )
 			),
@@ -99,7 +99,34 @@ class PWPP_Options_Page {
 	 * @return string the html for the options page
 	 */
 	public function render_page() {
-		# code goes here
+		// the loop
+		echo '<h2>Project Loop</h2>
+		<p>Control how projects from your portfolio are displayed in a loop - such as a category of projects or using a shortcode to insert more than one project.</p><div class="span4">', premise_field_section( array(
+			array(
+				'type' => 'text',
+				'name' => 'pwpp_options[loop][excerpt]',
+				'label' => 'Excerpt',
+				'tooltip' => 'Enter word count. If left blank, you can control where the excerpt breaks by inserting the "read more" tags from the Wordpress Editor.',
+				'placeholder' => '22',
+				'style' => 'width:60px;',
+			),
+			// hide content
+			array(
+				'type' => 'checkbox',
+				'name' => 'pwpp_options[loop][hide][title]',
+				'label' => 'hide the title?',
+			),
+			array(
+				'type' => 'checkbox',
+				'name' => 'pwpp_options[loop][hide][thumbnail]',
+				'label' => 'hide the thumbnail?',
+			),
+			array(
+				'type' => 'checkbox',
+				'name' => 'pwpp_options[loop][hide][excerpt]',
+				'label' => 'hide the excerpt?',
+			),
+		), false ), '</div>';
 	}
 }
 

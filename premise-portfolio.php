@@ -149,7 +149,7 @@ class Premise_Portfolio {
 	public function do_hooks() {
 		// Initiate the options page
 		// TODO finish this class
-		// add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
+		add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
 
 		// Initiate and register our custom post type
 		$portfolio_cpt = PWPP_Portfolio_CPT::get_instance();

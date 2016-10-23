@@ -52,7 +52,6 @@ class PWPP_Portfolio_CPT {
 					'editor',
 					'auhtor',
 					'thumbnail',
-					'custom-fields',
 				),
 				'menu_icon' => 'dashicons-portfolio',
 			) );
@@ -116,8 +115,11 @@ class PWPP_Portfolio_CPT {
 	public function add_meta_boxes( $post_type ) {
 		if ( in_array( $post_type, $this->post_type ) ) {
 			add_meta_box( 'pwpp-cpt-meta-box', 'Portfolio Item Options', array( $this, 'render_meta_box' ), 'premise_portfolio', 'normal', 'high' );
+<<<<<<< Updated upstream
 
 			add_meta_box( 'pwpp-cpt-meta-box-custom-fields', 'Portfolio Item Custom Fields', array( $this, 'render_meta_box_fields' ), 'premise_portfolio', 'normal', 'high' );
+=======
+>>>>>>> Stashed changes
 		}
 	}
 
@@ -132,64 +134,51 @@ class PWPP_Portfolio_CPT {
 		wp_nonce_field( 'premise_portfolio_nonce_check', 'premise_portfolio_nonce' );
 
 		// Add a call to action
+		$cfields = premise_get_value( 'premise_portfolio[custom-fields]', 'post' );
+
+		var_dump( $cfields );
+
 		?>
-		<div class="premise-row">
-			<div class="col2">
-				<h4>Insert A Call To Action</h4>
-				<p><i class="description">This is the main button displayed under the featured image.</i></p>
+			<h4>Add Custom Meta Data To This Project</h4>
+			<div class="pwpfd-wrapper">
 				<?php
-				// the url
-				premise_field( 'text', array(
-					'name' => 'premise_portfolio[cta-url]',
-					'placeholder' => 'project url',
-					'label' => 'Call to Action URL',
-					'context' => 'post',
-				) );
 
-				// the text
-				premise_field( 'text', array(
-					'name' => 'premise_portfolio[cta-text]',
-					'placeholder' => 'Go to project',
-					'label' => 'Call to Action Text',
-					'context' => 'post',
-				) );
-				?>
+				$i = 1;
+				foreach ( (array) $cfields as $k => $field ) {
 
-				<h4>Excerpt Length</h4>
-				<?php
-				premise_field( 'text', array(
-					'name' => 'premise_portfolio[excerpt]',
-					'placeholder' => '22',
-					'label' => 'Enter number of words',
-					'context' => 'post',
-					'style' => 'max-width: 60px;',
-				) );
-				?>
+					?><div class="<?php echo ( $i == count( $cfields ) ) ? 'pwpp-project-custom-fields' : 'pwpfd-duplicate-this'; ?>">
+						<div class="premise-row"><?
+
+							premise_field_section( array(
+								array(
+									'type'          => 'text',
+									'label'         => 'Key',
+									'name'          => 'premise_portfolio[custom-fields]['.$k.'][key]',
+									'wrapper_class' => 'span4',
+									'context'       => 'post',
+								),
+								array(
+									'type'          => 'textarea',
+									'label'         => 'value',
+									'name'          => 'premise_portfolio[custom-fields]['.$k.'][value]',
+									'wrapper_class' => 'span8',
+									'context'       => 'post',
+								),
+							) );
+
+						?></div>
+					</div><?
+
+					$i++;
+				} ?>
 			</div>
-
-			<div class="col2">
-				<h4>Grid View Options</h4>
-				<p><i class="description">When viewed from the portfolio grid, by default this portfolio item will use the featured image as the full background. To change what image is displayed on hover or normal states upload them here. Whichever is left blank will default to the featured image.<br>
-				<b>Hint:</b> You can also enter a hex color i.e. <code>#376645</code>.</i></p>
-				<?php
-				// the url
-				premise_field( 'wp_media', array(
-					'name' => 'premise_portfolio[grid-view][normal-bg]',
-					'label' => 'Nomral State Background',
-					'placeholder' => 'Upload an image',
-					'context' => 'post',
-				) );
-
-				// the text
-				premise_field( 'wp_media', array(
-					'name' => 'premise_portfolio[grid-view][hover-bg]',
-					'placeholder' => '#376645',
-					'label' => 'Hover State Background',
-					'context' => 'post',
-				) );
-				?>
-			</div>
-		</div>
+			<script type="text/javascript">
+				(function($) {
+					$(document).ready(function(){
+						$( '.pwpp-project-custom-fields' ).premiseFieldDuplicate();
+					});
+				}(jQuery));
+			</script>
 		<?php
 	}
 
@@ -318,6 +307,14 @@ class PWPP_Portfolio_CPT {
 	function portfolio_page_template( $template ) {
 		global $post;
 
+		if ( is_tax( 'premise-portfolio-category' ) ) {
+			// check if the theme is trying to overwrite the template
+			$new_template = locate_template( array( 'loop-premise-portfolio.php' ) );
+			if ( '' != $new_template ) {
+				return $new_template ;
+			}
+			return (string) PWPP_PATH . '/view/loop-premise-portfolio.php';
+		}
 		if ( 'premise_portfolio' == $post->post_type  ) {
 			// check if the theme is trying to overwrite the template
 			$new_template = locate_template( array( 'single-premise-portfolio.php' ) );
