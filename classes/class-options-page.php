@@ -103,29 +103,48 @@ class PWPP_Options_Page {
 		echo '<h2>Project Loop</h2>
 		<p>Control how projects from your portfolio are displayed in a loop - such as a category of projects or using a shortcode to insert more than one project.</p><div class="span4">', premise_field_section( array(
 			array(
-				'type' => 'text',
-				'name' => 'pwpp_options[loop][excerpt]',
-				'label' => 'Excerpt',
-				'tooltip' => 'Enter word count. If left blank, you can control where the excerpt breaks by inserting the "read more" tags from the Wordpress Editor.',
+				'type'    => 'select',
+				'name'    => 'pwpp_portfolio[loop][cols]',
+				'label'   => 'Default number of columns',
+				'options' => array(
+					'Select an option' => '',
+					'2 Columns'        => 'col2',
+					'3 Columns'        => 'col3',
+					'4 Columns'        => 'col4',
+					'5 Columns'        => 'col5',
+					'6 Columns'        => 'col6',
+				),
+			),
+			array(
+				'type'        => 'text',
+				'name'        => 'pwpp_portfolio[loop][excerpt]',
+				'label'       => 'Excerpt',
+				'tooltip'     => 'Enter word count. If left blank, you can control where the excerpt breaks by inserting the "read more" tags from the Wordpress Editor.',
 				'placeholder' => '22',
-				'style' => 'width:60px;',
+				'style'       => 'width:60px;',
 			),
 			// hide content
 			array(
-				'type' => 'checkbox',
-				'name' => 'pwpp_options[loop][hide][title]',
-				'label' => 'hide the title?',
+				'type'  => 'checkbox',
+				'name'  => 'pwpp_portfolio[loop][hide][title]',
+				'label' => 'hide the title',
 			),
 			array(
-				'type' => 'checkbox',
-				'name' => 'pwpp_options[loop][hide][thumbnail]',
-				'label' => 'hide the thumbnail?',
+				'type'  => 'checkbox',
+				'name'  => 'pwpp_portfolio[loop][hide][thumbnail]',
+				'label' => 'hide the thumbnail',
 			),
 			array(
-				'type' => 'checkbox',
-				'name' => 'pwpp_options[loop][hide][excerpt]',
-				'label' => 'hide the excerpt?',
+				'type'  => 'checkbox',
+				'name'  => 'pwpp_portfolio[loop][hide][excerpt]',
+				'label' => 'hide the excerpt',
 			),
+			array(
+				'type'  => 'checkbox',
+				'name'  => 'pwpp_portfolio[loop][hide][meta]',
+				'label' => 'hide meta data',
+			),
+			array( 'type' => 'submit' ),
 		), false ), '</div>';
 	}
 }
