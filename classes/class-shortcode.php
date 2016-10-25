@@ -34,8 +34,9 @@ class PWPP_Shortcode {
 	 * @var array
 	 */
 	public $defaults = array(
-		'grid' => '4',
-		'show-cta' => false,
+		'grid' => 'row',
+		'columns' => 'col4',
+		'class' => '',
 	);
 
 
@@ -70,8 +71,8 @@ class PWPP_Shortcode {
 	 * @since 	1.0.0
 	 */
 	public function __construct() {
-		// set the default grid if it has been changed from the options page
-		$this->defaults['grid'] = ( $_cols = premise_get_value( 'pwpp_portfolio[loop][cols]' ) ) ? $_cols : $this->defaults['grid'];
+		// set the default columns if it has been changed from the options page
+		$this->defaults['columns'] = ( $_cols = premise_get_value( 'pwpp_portfolio[loop][cols]' ) ) ? $_cols : $this->defaults['columns'];
 
 		// get the portfolio items
 		self::$query = new WP_query( array(
@@ -104,6 +105,8 @@ class PWPP_Shortcode {
 	public function init( $atts ) {
 		// get these params and sve them in our object for public use.
 		self::$params = $this->a = shortcode_atts( $this->defaults, $atts, 'pwpp_portfolio' );
+		// normalize columns param
+		self::$params['columns'] = (string) ( 6 >= (int) self::$params['columns'] && 2 <= (int) self::$params['columns'] ) ? 'col'.self::$params['columns'] : self::$params['columns'];
 
 		// Allow themes to override the tamllate that gets loaded
 		if ( '' !== ( $new_loop_tmpl = locate_template( 'loop-premise-portfolio.php' ) ) ) {
@@ -138,14 +141,14 @@ class PWPP_Shortcode {
 
 
 	/**
-	 * returns the shortcode grid param. called from our template pwpp_get_grid_param().
+	 * returns the shortcode grid param. called from our template pwpp_get_shortcode_atts().
 	 *
-	 * @see pwpp_get_grid_param uses this function. located in lib/functions.php
+	 * @see pwpp_get_shortcode_atts uses this function. located in lib/functions.php
 	 *
 	 * @return string column class to set the number of columns 1-6. defaults to 4. returns value already escaped using esc_attr();
 	 */
-	public static function get_grid_param() {
-		return esc_attr( ( 6 >= (int) self::$params['grid'] && 2 <= (int) self::$params['grid'] ) ? 'col'.self::$params['grid'] : self::$params['grid'] );
+	public static function get_shortcode_atts() {
+		return self::$params;
 	}
 
 
