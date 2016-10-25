@@ -47,21 +47,6 @@ get_header();
 					<?php the_terms( get_the_id(), 'premise-portfolio-tag' ); ?>
 				</div>
 
-				<?php if ( pwpp_get_cta_url() ) : ?>
-					<!-- The CTA -->
-					<div class="pwpp-post-cta">
-						<a href="<?php echo esc_url( (string) pwpp_get_cta_url() ); ?>" class="pwpp-post-cta-url" target="_blank">
-
-							<?php if ( pwpp_get_cta_text() ) : ?>
-								<span class="pwpp-post-cta-text">
-									<?php echo esc_html( (string) pwpp_get_cta_text() ); ?>
-								</span>
-							<?php endif; ?>
-
-						</a>
-					</div>
-				<?php endif; ?>
-
 			<?php endwhile;
 
 		else :
