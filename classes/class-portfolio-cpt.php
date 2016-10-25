@@ -115,11 +115,6 @@ class PWPP_Portfolio_CPT {
 	public function add_meta_boxes( $post_type ) {
 		if ( in_array( $post_type, $this->post_type ) ) {
 			add_meta_box( 'pwpp-cpt-meta-box', 'Portfolio Item Options', array( $this, 'render_meta_box' ), 'premise_portfolio', 'normal', 'high' );
-<<<<<<< Updated upstream
-
-			add_meta_box( 'pwpp-cpt-meta-box-custom-fields', 'Portfolio Item Custom Fields', array( $this, 'render_meta_box_fields' ), 'premise_portfolio', 'normal', 'high' );
-=======
->>>>>>> Stashed changes
 		}
 	}
 
@@ -134,10 +129,7 @@ class PWPP_Portfolio_CPT {
 		wp_nonce_field( 'premise_portfolio_nonce_check', 'premise_portfolio_nonce' );
 
 		// Add a call to action
-		$cfields = premise_get_value( 'premise_portfolio[custom-fields]', 'post' );
-
-		var_dump( $cfields );
-
+		$cfields = premise_get_value( 'pwpp_portfolio[custom-fields]', 'post' );
 		?>
 			<h4>Add Custom Meta Data To This Project</h4>
 			<div class="pwpfd-wrapper">
@@ -153,14 +145,14 @@ class PWPP_Portfolio_CPT {
 								array(
 									'type'          => 'text',
 									'label'         => 'Key',
-									'name'          => 'premise_portfolio[custom-fields]['.$k.'][key]',
+									'name'          => 'pwpp_portfolio[custom-fields]['.$k.'][key]',
 									'wrapper_class' => 'span4',
 									'context'       => 'post',
 								),
 								array(
 									'type'          => 'textarea',
 									'label'         => 'value',
-									'name'          => 'premise_portfolio[custom-fields]['.$k.'][value]',
+									'name'          => 'pwpp_portfolio[custom-fields]['.$k.'][value]',
 									'wrapper_class' => 'span8',
 									'context'       => 'post',
 								),
@@ -179,64 +171,6 @@ class PWPP_Portfolio_CPT {
 					});
 				}(jQuery));
 			</script>
-		<?php
-	}
-
-
-	public function render_meta_box_fields() {
-		?>
-		<div id="" class="premise-row pwpp-custom-fields">
-			<div class="span4"><?php
-				premise_field( 'text', array(
-					'name' => 'premise_portfolio[meta][keys][]',
-					'label' => 'Name',
-				) ); ?>
-			</div>
-
-			<div class="span7"><?php
-				premise_field( 'textarea', array(
-					'name' => 'premise_portfolio[meta][values][]',
-					'label' => 'Value',
-				) ); ?>
-			</div>
-
-			<div class="span1 pwpp-fields-controller">
-				<!-- <a href="javascript:;" class="pwpp-new-field">
-					<i class="fa fa-plus"></i>
-				</a>
-				<a href="javascript:;" class="pwpp-remove-field">
-					<i class="fa fa-minus"></i>
-				</a> -->
-			</div>
-		</div>
-		<script>
-			(function($){
-				$(document).ready(function(){
-					$('.pwpp-custom-fields').wrap( '<div class="pwpp-duplicate"></div>' );
-
-					var wrapper = $( '.pwpp-duplicate' ),
-					count = wrapper.children().length;
-
-					wrapper.append( '<div class="premise-clear premise-align-center"><a href="javascript:;" class="pwpp-duplicate-it"><i class="fa fa-plus"></i></a>' );
-
-					// if we have more than one child
-					if ( 1 < count ) {
-						for (var i = count.length - 1; i >= 1; i--) {
-							console.log( wrapper.children()[i] );
-						}
-					}
-					// we only have 1 child
-					else {
-
-					}
-
-					var btn = $( '.pwpp-duplicate-it' );
-					btn.click( function() {
-						console.log( wrapper.last().children() );
-					} );
-				});
-			}(jQuery));
-		</script>
 		<?php
 	}
 
@@ -278,9 +212,9 @@ class PWPP_Portfolio_CPT {
             return;
         }
 
-        $pwpp_mb = $_POST['premise_portfolio'];
+        $pwpp_mb = $_POST['pwpp_portfolio'];
 
-        update_post_meta( $post_id, 'premise_portfolio', $pwpp_mb );
+        update_post_meta( $post_id, 'pwpp_portfolio', $pwpp_mb );
 	}
 
 
@@ -341,7 +275,7 @@ class PWPP_Portfolio_CPT {
 		global $post;
 
 		if ( 'premise_portfolio' == $post->post_type  ) {
-			return ( '' !== $new_length = ( string ) premise_get_value( 'premise_portfolio[excerpt]', array( 'context' => 'post', 'id' => $post->ID ) ) ) ? $new_length : 22;
+			return ( '' !== $new_length = ( string ) premise_get_value( 'pwpp_portfolio[loop][excerpt]' ) ) ? $new_length : 22;
 		}
 		return $length;
 	}
