@@ -10,31 +10,45 @@
  */
 get_header(); ?>
 
-<section id="pwpp-single-portfolio" class="premise-block premise-clear-float">
+<section id="pwpp-portfolio-grid" class="premise-block premise-clear-float">
 
 	<div class="pwpp-container premise-clear-float">
 
 		<?php
 		if ( pwpp_have_posts() ) : ?>
-			<div id="pwpp-portfolio-grid">
+			<div class="pwpp-the-loop">
 				<div class="premise-row"><?php
 					while ( pwpp_have_posts() ) { pwpp_the_post(); ?>
 
 						<div <?php pwpp_loop_item_attrs(); ?>>
-							<a href="<?php the_permalink(); ?>" class="premise-block">
 								<div class="pwpp-item-inner">
-									<?php if ( '' !== get_the_title() ) : ?>
+									<?php if ( '' !== get_the_title() && ! premise_get_value( 'pwpp_portfolio[loop][hide][title]' ) ) : ?>
 										<div class="pwpp-post-title">
-											<h2><?php the_title(); ?></h2>
+											<a href="<?php the_permalink(); ?>">
+												<h2><?php the_title(); ?></h2>
+											</a>
 										</div>
 									<?php endif; ?>
-									<?php pwpp_the_thumbnail( 'loop' ); ?>
-									<?php // echo pwpp_get_the_call_to_action(); ?>
-									<div class="pwpp-post-excerpt">
-										<?php the_excerpt(); ?>
-									</div>
+									<a href="<?php the_permalink(); ?>">
+										<?php if ( ! premise_get_value( 'pwpp_portfolio[loop][hide][thumbnail]' ) ) pwpp_the_thumbnail( 'loop' ); ?>
+									</a>
+									<?php if ( ! premise_get_value( 'pwpp_portfolio[loop][hide][excerpt]' ) ) : ?>
+										<div class="pwpp-post-excerpt">
+											<?php
+											if ( premise_get_value( 'pwpp_portfolio[loop][excerpt]' ) ) {
+												the_excerpt();
+											}
+											else {
+												the_content();
+											} ?>
+										</div>
+									<?php endif; ?>
+									<?php if ( ! premise_get_value( 'pwpp_portfolio[loop][hide][meta]' ) ) : ?>
+										<div class="pwpp-post-meta">
+											By: <?php the_author(); ?>
+										</div>
+									<?php endif; ?>
 								</div>
-							</a>
 						</div>
 
 					<?php
