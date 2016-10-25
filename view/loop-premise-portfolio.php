@@ -17,10 +17,10 @@ get_header(); ?>
 		<?php
 		if ( pwpp_have_posts() ) : ?>
 			<div class="pwpp-the-loop">
-				<div class="premise-row"><?php
+				<div <?php pwpp_loop_class(); ?>><?php
 					while ( pwpp_have_posts() ) { pwpp_the_post(); ?>
 
-						<div <?php pwpp_loop_item_attrs(); ?>>
+						<div <?php pwpp_loop_item_class(); ?>>
 								<div class="pwpp-item-inner">
 									<?php if ( '' !== get_the_title() && ! premise_get_value( 'pwpp_portfolio[loop][hide][title]' ) ) : ?>
 										<div class="pwpp-post-title">

@@ -5,84 +5,6 @@
  * @package premise-portfolio\lib
  */
 
-
-/**
- * Must be called from within the Loop
- *
- * @return string html for the featured image
- */
-function pwpp_get_loop_thumbnail() {
-
-	global $post;
-	$_html = '';
-
-	$img_url =  premise_get_value( 'premise_portfolio[grid-view][normal-bg]', 'post' ) ?
-					(string) premise_get_value( 'premise_portfolio[grid-view][normal-bg]', 'post' ) :
-						(string) wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
-
-	if ( $background = pwpp_validate_background( $img_url ) )
-		$_html = '<div class="pwpp-post-thumbnail" style="'.$background.'"></div>';
-
-	return (string) $_html;
-}
-
-
-/**
- * validates whether a background is usable (image url or hex color) abd returns it
- * as a string. Return false if background is not validated.
- *
- * @param  string $bg background to validate
- * @return mixed      background validated. false if not valid
- */
-function pwpp_validate_background( $bg = '' ) {
-	if ( ! empty( $bg ) ) {
-		if ( preg_match('/^.*(jpg|png|jpeg|gif)$/i', $bg ) ) {
-			return 'background-image: url(' . esc_url( $bg ) . ');'; // this hsould have no spacing except after ':'
-		}
-		if ( preg_match('/^#([0-9a-zA-Z]{3,6})/', $bg, $match ) ) {
-			$match[1] = (string) ( 6 > strlen( $match[1] ) ) ? substr( $match[1].$match[1], 0, 6 ) : $match[1];
-			return 'background-color: ' . esc_attr( '#' . $match[1] ) . ';';
-		}
-	}
-	return false;
-}
-
-
-/**
- * get the html attributes for portfolio item
- *
- * @return string html for portfolio item attributes
- */
-function pwpp_get_thumbnail_attrs( $classes = '' ) {
-	$class = 'class="';
-	$attrs = '';
-	$gview = premise_get_value( 'premise_portfolio[grid-view]', 'post' );
-
-	if ( $gview && is_array( $gview ) ) {
-		$normal = isset( $gview['normal-bg'] )
-					&& ! empty( $gview['normal-bg'] )
-						? ' data-normal-state="' . esc_attr( $gview['normal-bg'] ) . '"'
-							: '';
-		$hover  = isset( $gview['hover-bg'] )
-					&& ! empty( $gview['hover-bg'] )
-						? ' data-hover-state="' . esc_attr( $gview['hover-bg']  ) . '"'
-							: '';
-
-
-		$attrs .= ( ! empty( $normal ) || ! empty( $hover ) ) ? $normal.$hover : '';
-		$class .= ( ! empty( $hover ) ) ? ' pwpp-loop-hover-animation'          : ' pwpp-loop-default-animation';
-	}
-	else {
-		$class .= ' pwpp-loop-default-animation';
-	}
-
-	$class .= ' ' . esc_attr( (string) $classes ) . '"';
-
-	return $class.$attrs;
-}
-
-
-
 /**
  * Displays the post thumbnail for the premise protfolio plugin
  *
@@ -94,18 +16,9 @@ function pwpp_the_thumbnail( $view = 'post' ) {
 	$bg    = '';
 	$_html = '';
 
-	if ( 'post' == $view && has_post_thumbnail() ) {
+	if ( has_post_thumbnail() ) {
 		$url = (string) wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
 		$bg = 'background-image: url( ' . esc_url( $url ) . ' );';
-	}
-	else {
-		if ( premise_get_value( 'premise_portfolio[grid-view][normal-bg]', 'post' ) ) {
-			$url = (string) premise_get_value( 'premise_portfolio[grid-view][normal-bg]', 'post' );
-		}
-		elseif ( has_post_thumbnail() ) {
-			$url = (string) wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
-		}
-		$bg = pwpp_validate_background( $url );
 	}
 
 	$_html = '<div class="pwpp-post-thumbnail-wrapper premise-aspect-ratio-16-9">
@@ -134,56 +47,28 @@ function pwpp_init_lightbox() {
 	echo (string) $lightbox;
 }
 
-
 /**
- * get the call to action html string
+ * Outputs the classes for the loop grid
  *
- * @return string html for call to action
+ * @param  string $classes additional classes. Optional
+ *
+ * @return string          classes to display
  */
-function pwpp_get_the_call_to_action() {
-	global $post;
-
-	// set our variables
-	$pwpp_portfolio = premise_get_value( 'premise_portfolio', array( 'context' => 'post', 'id' => $post->ID ) );
-
-	// CTA
-	$pwpp_cta_url  = (string) isset( $pwpp_portfolio['cta-url'] )  ? $pwpp_portfolio['cta-url']  : '';
-	$pwpp_cta_text = (string) isset( $pwpp_portfolio['cta-text'] ) ? $pwpp_portfolio['cta-text'] : '';
-
-	$_html = '';
-
-	if ( '' !== $pwpp_cta_url ) : ob_start(); ?>
-		<!-- The CTA -->
-		<div class="pwpp-post-cta">
-			<a href="<?php echo esc_url( $pwpp_portfolio['cta-url'] ); ?>" class="pwpp-post-cta-url" >
-
-				<?php if ( '' !== $pwpp_cta_text ) : ?>
-					<span class="pwpp-post-cta-text">
-						<?php echo esc_html( $pwpp_portfolio['cta-text'] ); ?>
-					</span>
-				<?php endif; ?>
-
-			</a>
-		</div>
-	<?php $_html = ob_get_clean();
-	endif;
-
-	return (string) $_html;
+function pwpp_loop_class( $classes = '' ) {
+	$atts = PWPP_Shortcode::get_shortcode_atts();
+	echo 'class="' . esc_attr( 'premise-'.$atts['grid'] . ' ' . $classes ) . '"';
 }
 
-
-function pwpp_loop_item_attrs() {
-	echo pwpp_get_thumbnail_attrs( 'pwpp-item ' . pwpp_get_grid_param() );
-}
-
-
 /**
- * get the grid parametter used in the shortcode being displayed
+ * Outputs the classes for each portfolio item
  *
- * @return string column class to use
+ * @param  string $classes additional classes. Optional
+ *
+ * @return string classes for item in loop
  */
-function pwpp_get_grid_param() {
-	return PWPP_Shortcode::get_grid_param();
+function pwpp_loop_item_class( $classes = '' ) {
+	$atts = PWPP_Shortcode::get_shortcode_atts();
+	echo 'class="' . esc_attr( $atts['columns'] . ' ' . $atts['class'] . ' ' . $classes ) . '"';
 }
 
 
