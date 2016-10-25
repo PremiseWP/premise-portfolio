@@ -108,7 +108,7 @@ function pwpp_the_thumbnail( $view = 'post' ) {
 		$bg = pwpp_validate_background( $url );
 	}
 
-	$_html = '<div class="pwpp-post-thumbnail-wrapper">
+	$_html = '<div class="pwpp-post-thumbnail-wrapper premise-aspect-ratio-16-9">
 				<div class="pwpp-post-thumbnail" style="' . $bg . '"></div>
 			</div>';
 	echo $_html;
@@ -256,14 +256,14 @@ function pwpp_get_custom_fields() {
 
 function pwpp_the_custom_fields( $format = 'dl' ) {
 
-	if ( $cf = pwpp_get_custom_fields() ) {
+	if ( $cf = premise_get_value( 'pwpp_portfolio[custom-fields]', 'post' ) ) {
 
 		$list = '<div class="pwpp-custom-fields-container">';
 
 			$list .= ( 'dl' !== $format ) ? '<table>' : '<dl>';
-			foreach ($cf as $k => $v) {
-				$key   = esc_html( $k );
-				$value = esc_html( $v );
+			foreach ( (array) $cf as $k => $v ) {
+				$key   = strip_tags( $v['key'], '<a>,<p>,<h1>,<h2>,<h3>,<h4>,<h5>,<h6>,<b>,<strong>,<span>' );
+				$value = strip_tags( $v['value'], '<a>,<p>,<h1>,<h2>,<h3>,<h4>,<h5>,<h6>,<b>,<strong>,<span>' );
 
 				$tags = ( 'dl' !== $format ) ? array( 'td', 'td' ) : array( 'dt', 'dd' );
 
