@@ -70,11 +70,13 @@ class PWPP_Shortcode {
 	 * @since 	1.0.0
 	 */
 	public function __construct() {
+		// set the default grid if it has been changed from the options page
+		$this->defaults['grid'] = ( $_cols = premise_get_value( 'pwpp_portfolio[loop][cols]' ) ) ? $_cols : $this->defaults['grid'];
+
 		// get the portfolio items
 		self::$query = new WP_query( array(
 			'post_type' => 'premise_portfolio',
 			'posts_per_page' => -1,
-
 		) );
 	}
 
@@ -143,7 +145,7 @@ class PWPP_Shortcode {
 	 * @return string column class to set the number of columns 1-6. defaults to 4. returns value already escaped using esc_attr();
 	 */
 	public static function get_grid_param() {
-		return esc_attr( ( 6 >= (int) self::$params['grid'] && 2 <= (int) self::$params['grid'] ) ? 'col'.self::$params['grid'] : 'col4' );
+		return esc_attr( ( 6 >= (int) self::$params['grid'] && 2 <= (int) self::$params['grid'] ) ? 'col'.self::$params['grid'] : self::$params['grid'] );
 	}
 
 
