@@ -8,7 +8,8 @@
  *
  * @package premise-portfolio\view
  */
-get_header(); ?>
+
+?>
 
 <section id="pwpp-portfolio-grid" class="premise-block premise-clear-float">
 
@@ -60,5 +61,3 @@ get_header(); ?>
 	</div>
 
 </section>
-
-<?php get_footer(); ?>
