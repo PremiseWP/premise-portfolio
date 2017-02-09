@@ -108,6 +108,7 @@ class PWPP_Options_Page {
 				'label'   => 'Default number of columns',
 				'options' => array(
 					'Select an option' => '',
+					'1 Column'         => 'span12',
 					'2 Columns'        => 'col2',
 					'3 Columns'        => 'col3',
 					'4 Columns'        => 'col4',
