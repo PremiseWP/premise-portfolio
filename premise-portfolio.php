@@ -165,6 +165,10 @@ class Premise_Portfolio {
 
 		// Add rewrite flush rules on init with a higher priority than 10.
 		add_action( 'init', array( $this, 'maybe_flush_rules' ), 11 );
+
+		if ( function_exists( 'add_image_size' ) ) {
+			add_image_size( 'pwpp-loop-thumbnail', 800, 600 );
+		}
 	}
 
 
