@@ -29,7 +29,7 @@ class PWPP_Options_Page {
 	 *
 	 * @var string
 	 */
-	public $plugin_url = PLUGIN_URL;
+	public $plugin_url = PWPP_URL;
 
 
 
@@ -39,7 +39,7 @@ class PWPP_Options_Page {
 	 *
 	 * @var strin
 	 */
-	public $plugin_path = PLUGIN_PATH;
+	public $plugin_path = PWPP_PATH;
 
 
 
