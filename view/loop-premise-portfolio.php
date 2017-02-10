@@ -52,8 +52,8 @@
 										<?php if ( ! premise_get_value( 'pwpp_portfolio[loop][hide][meta]' ) ) : ?>
 											<div class="pwpp-post-meta">
 												<div class="pwpp-author">By: <?php the_author(); ?></div>
-												<div class="pwpp-cats">Categories: <?php the_terms( $post->ID, 'premise-portfolio-category', '', ', ' ); ?></div>
-												<div class="pwpp-tags">Tags: <?php the_terms( $post->ID, 'premise-portfolio-tag', '', ', ' ); ?></div>
+												<div class="pwpp-cats">Categories: <?php the_terms( get_the_ID(), 'premise-portfolio-category', '', ', ' ); ?></div>
+												<div class="pwpp-tags">Tags: <?php the_terms( get_the_ID(), 'premise-portfolio-tag', '', ', ' ); ?></div>
 											</div>
 										<?php endif; ?>
 
