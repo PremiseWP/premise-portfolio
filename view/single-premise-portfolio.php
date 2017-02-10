@@ -22,12 +22,12 @@ get_header();
 					<h1><?php the_title(); ?></h1>
 				</div>
 
-				<?php if ( pwpp_get_cta_url() ) : ?>
-					<a href="<?php echo esc_url( (string) pwpp_get_cta_url() ); ?>" class="premise-block" target="_blank">
-						<?php pwpp_the_thumbnail(); ?>
-					</a>
-				<?php else : ?>
-					<?php pwpp_the_thumbnail(); ?>
+				<?php if ( has_post_thumbnail() ) : ?>
+					<div class="pwpp-post-thumbnail">
+						<a href="<?php the_permalink(); ?>">
+							<?php the_post_thumbnail( 'pwpp-loop-thumbnail', array( 'class' => 'pwp-responsive' ) ); ?>
+						</a>
+					</div>
 				<?php endif; ?>
 
 				<?php pwpp_the_custom_fields(); ?>
