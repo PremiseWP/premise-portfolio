@@ -39,12 +39,16 @@ get_header();
 
 				<!-- The category -->
 				<div class="pwpp-post-category">
-					<?php the_terms( get_the_id(), 'premise-portfolio-category' ); ?>
+					<?php echo ( $category_list = get_the_term_list( get_the_id(), 'premise-portfolio-category' ) )
+						? 'Categories: ' . $category_list
+						: ''; ?>
 				</div>
 
 				<!-- The tags -->
 				<div class="pwpp-post-tags">
-					<?php the_terms( get_the_id(), 'premise-portfolio-tag' ); ?>
+					<?php echo ( $tag_list = get_the_term_list( get_the_id(), 'premise-portfolio-tag' ) )
+						? 'Tags: ' . $tag_list
+						: ''; ?>
 				</div>
 
 			<?php endwhile;

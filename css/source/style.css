@@ -12,10 +12,6 @@
 	font: inherit;
 }
 
-#pwpp-single-portfolio * {
-	box-sizing: border-box;
-}
-
 #pwpp-single-portfolio .pwpp-container {
 	max-width: 100%;
 	margin: 0 auto;
