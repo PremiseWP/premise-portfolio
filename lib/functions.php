@@ -56,7 +56,7 @@ function pwpp_init_lightbox() {
  */
 function pwpp_loop_class( $classes = '' ) {
 	$atts = PWPP_Shortcode::get_shortcode_atts();
-	echo 'class="' . esc_attr( 'premise-'.$atts['grid'] . ' ' . $classes ) . '"';
+	echo 'class="' . esc_attr( 'pwp-'.$atts['grid'] . ' force-columns ' . $classes ) . '"';
 }
 
 /**
