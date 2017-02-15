@@ -37,6 +37,7 @@ class PWPP_Shortcode {
 		'grid' => 'row',
 		'columns' => 'col4',
 		'class' => '',
+		'cat' => '',
 	);
 
 
@@ -52,13 +53,6 @@ class PWPP_Shortcode {
 	 * @var null
 	 */
 	protected static $query = null;
-
-
-	/**
-	 * The shortcodes atts after they have been parsed woth defaults
-	 * @var array
-	 */
-	public $a = array();
 
 
 	/**
@@ -81,6 +75,11 @@ class PWPP_Shortcode {
 		if ( $_cols = premise_get_value( 'pwpp_portfolio[loop][cols]' ) ) {
 			$this->defaults['columns'] = esc_attr( $_cols );
 		}
+
+		self::$query_args = array(
+			'post_type' => 'premise_portfolio',
+			'posts_per_page' => -1,
+		);
 	}
 
 
@@ -106,14 +105,21 @@ class PWPP_Shortcode {
 	 */
 	public function init( $atts ) {
 		// get these params and sve them in our object for public use.
-		self::$params = $this->a = shortcode_atts( $this->defaults, $atts, 'pwp_portfolio' );
-		// normalize columns param
-		self::$params['columns'] = (string) ( 6 >= (int) self::$params['columns'] && 2 <= (int) self::$params['columns'] ) ? 'col'.self::$params['columns'] : self::$params['columns'];
+		$a = shortcode_atts( $this->defaults, $atts, 'pwp_portfolio' );
 
-		self::$query_args = array(
-			'post_type' => 'premise_portfolio',
-			'posts_per_page' => -1,
-		);
+		// normalize columns param
+		$a['columns'] = (string) ( 6 >= (int) $a['columns'] && 2 <= (int) $a['columns'] ) ? 'col'.$a['columns'] : $a['columns'];
+
+		// normalize categories
+		if ( isset( $a['cat'] ) && ! empty( $a['cat'] ) ) {
+			self::$query_args['tax_query'] = array(
+				array(
+					'taxonomy' => 'premise-portfolio-category',
+					'field'    => ( preg_match( '/[^0-9,]/', $a['cat'] ) ) ? 'slug'                    : 'term_id',
+					'terms'    => ( preg_match( '/,/', $a['cat'] ) )       ? explode( ',', $a['cat'] ) : $a['cat'],
+				),
+			);
+		}
 
 		// Allow themes to override the tamllate that gets loaded
 		if ( '' !== ( $new_loop_tmpl = locate_template( 'loop-premise-portfolio.php' ) ) ) {
