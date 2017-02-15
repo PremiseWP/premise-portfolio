@@ -3,7 +3,7 @@ Contributors: premisewp
 Donate link: http://premisewp.com/donate
 Tags: portfolio, premise portfolio, minimalistic portfolio, simple portfolio, portfolio custom post type, premise wp, premise, premisewp
 Requires at least: 3.9.0
-Tested up to: 4.7
+Tested up to: 4.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -31,12 +31,6 @@ e.g.
 Go to <a href="http://plugins.premisewp.com/premise-portfolio/premise-portfolio/" target="_blank">Premise Portfolio</a>.
 
 == Changelog ==
-
-= 1.2.1 =
-* Added ability to filter portfolio loop by categories. Pass cat param with a string of category names or ids separated by comma.
-
-= 1.2.0 =
-* Complete redesign. Simplified the plugin and the way it displays the portfolio.
 
 = 1.1.0 =
 * Add tags and categories to Portfolio Items CPT & single template

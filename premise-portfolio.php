@@ -3,7 +3,7 @@
  * Plugin Name: Premise Portfolio
  * Description: Display a modern and minimalistic portfolio on your site. This is the official portfolio plugin used across http://premisewp.com to display the themes and plugins that we build. The main idea of this plugin is to offer an easy solution that looks beautiful out of the box, but that also allows you to fully customize the look and behaviour of your portfolio.
  * Plugin URI:  https://plugins.premisewp.com/wordpress-portfolio-plugin
- * Version:     1.2.1
+ * Version:     1.1.0
  * Author:      Premise WP <info@premisewp.com> by: Mario Vallejo
  * Author URI:  http://premisewp.com
  * License:     GPL
@@ -149,7 +149,7 @@ class Premise_Portfolio {
 	public function do_hooks() {
 		// Initiate the options page
 		// TODO finish this class
-		add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
+		// add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
 
 		// Initiate and register our custom post type
 		$portfolio_cpt = PWPP_Portfolio_CPT::get_instance();
@@ -157,7 +157,7 @@ class Premise_Portfolio {
 		$portfolio_cpt->init();
 
 		// register our shortcode
-		add_shortcode( 'pwp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
+		add_shortcode( 'pwpp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
 
 		add_filter( 'template_include', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_page_template' ), 99 );
 
@@ -165,10 +165,6 @@ class Premise_Portfolio {
 
 		// Add rewrite flush rules on init with a higher priority than 10.
 		add_action( 'init', array( $this, 'maybe_flush_rules' ), 11 );
-
-		if ( function_exists( 'add_image_size' ) ) {
-			add_image_size( 'pwpp-loop-thumbnail', 800, 600 );
-		}
 	}
 
 
