@@ -32,24 +32,11 @@ Go to <a href="http://plugins.premisewp.com/premise-portfolio/premise-portfolio/
 
 == Changelog ==
 
+= 1.2.1 =
+* Added ability to filter portfolio loop by categories. Pass cat param with a string of category names or ids separated by comma.
+
 = 1.2.0 =
-* added compatibility with custom fields
-* added custom hover effect
-* update to plugin url
-* add comment and fix class that gets output onto the project
-* new options page
-* insert our own custom fields so we have no conflicts
-* use col default from options page
-* add aspect ratio class to portfolio item
-* update to correct DOM id in loop page
-* remove the cat. no longer an option in the backend
-* new attributes for shortcode
-* remove header and footer from loop template. not needed and creates conflict.
-* changed shortcode handler to pwp_portfolio
-* added one column as an option for the grid
-* added styles for the grid of portfolios
-* new image size for grid thumbnail
-* updated thumbnail on single portfolio template
+* Complete redesign. Simplified the plugin and the way it displays the portfolio.
 
 = 1.1.0 =
 * Add tags and categories to Portfolio Items CPT & single template
