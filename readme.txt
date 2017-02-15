@@ -32,6 +32,10 @@ Go to <a href="http://plugins.premisewp.com/premise-portfolio/premise-portfolio/
 
 == Changelog ==
 
+= 1.2.0 =
+* Simplified templates for portfolio loop and single post.
+* Added ability to filter portfolio items by category passing a param `cat` - can be a string of category names or ids sepatated by commas.
+
 = 1.1.0 =
 * Add tags and categories to Portfolio Items CPT & single template
 * Fix 404 error for Portfolio Items CPT
