@@ -157,7 +157,7 @@ class Premise_Portfolio {
 		$portfolio_cpt->init();
 
 		// register our shortcode
-		add_shortcode( 'pwpp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
+		add_shortcode( 'pwp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
 
 		add_filter( 'template_include', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_page_template' ), 99 );
 
