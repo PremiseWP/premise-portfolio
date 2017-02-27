@@ -124,6 +124,8 @@ class Premise_Portfolio {
 			require_once PWPP_PATH . 'lib/class-tgm-plugin-activation.php';
 
 			add_action( 'tgmpa_register', array( $this, 'require_premise' ) );
+
+			return;
 		}
 
 		require_once 'classes/class-options-page.php';
@@ -151,20 +153,22 @@ class Premise_Portfolio {
 		// TODO finish this class
 		// add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
 
-		// Initiate and register our custom post type
-		$portfolio_cpt = PWPP_Portfolio_CPT::get_instance();
+		if ( class_exists( 'PWPP_Portfolio_CPT' ) ) {
+			// Initiate and register our custom post type
+			$portfolio_cpt = PWPP_Portfolio_CPT::get_instance();
 
-		$portfolio_cpt->init();
+			$portfolio_cpt->init();
 
-		// register our shortcode
-		add_shortcode( 'pwp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
+			// register our shortcode
+			add_shortcode( 'pwp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
 
-		add_filter( 'template_include', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_page_template' ), 99 );
+			add_filter( 'template_include', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_page_template' ), 99 );
 
-		add_filter( 'excerpt_length', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_excerpt_trim' ) );
+			add_filter( 'excerpt_length', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_excerpt_trim' ) );
 
-		// Add rewrite flush rules on init with a higher priority than 10.
-		add_action( 'init', array( $this, 'maybe_flush_rules' ), 11 );
+			// Add rewrite flush rules on init with a higher priority than 10.
+			add_action( 'init', array( $this, 'maybe_flush_rules' ), 11 );
+		}
 	}
 
 
