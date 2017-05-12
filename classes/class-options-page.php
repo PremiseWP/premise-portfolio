@@ -98,7 +98,7 @@ class PWPP_Options_Page {
 	 *
 	 * @return string the html for the options page
 	 */
-	public function render_page() {
+	public static function render_page() {
 		// the loop
 		echo '<h2>Project Loop</h2>
 		<p>Control how projects from your portfolio are displayed in a loop - such as a category of projects or using a shortcode to insert more than one project.</p><div class="span4">', premise_field_section( array(

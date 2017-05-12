@@ -3,7 +3,7 @@
  * Plugin Name: Premise Portfolio
  * Description: Display a modern and minimalistic portfolio on your site. This is the official portfolio plugin used across http://premisewp.com to display the themes and plugins that we build. The main idea of this plugin is to offer an easy solution that looks beautiful out of the box, but that also allows you to fully customize the look and behaviour of your portfolio.
  * Plugin URI:  https://plugins.premisewp.com/wordpress-portfolio-plugin
- * Version:     1.2.0
+ * Version:     1.2.1
  * Author:      Premise WP <info@premisewp.com> by: Mario Vallejo
  * Author URI:  http://premisewp.com
  * License:     GPL
@@ -16,24 +16,15 @@
 // Block direct access to this file.
 defined( 'ABSPATH' ) or die();
 
-
-
-
 /**
  * Define plugin path
  */
 define( 'PWPP_PATH', plugin_dir_path( __FILE__ ) );
 
-
-
-
 /**
  * Define plugin url
  */
 define( 'PWPP_URL', plugin_dir_url( __FILE__ ) );
-
-
-
 
 // Instantiate our main class and setup plugin
 // Must use 'plugins_loaded' hook.
@@ -52,7 +43,6 @@ register_uninstall_hook( __FILE__, array( 'Premise_Portfolio', 'do_uninstall' ) 
  */
 class Premise_Portfolio {
 
-
 	/**
 	 * Plugin instance.
 	 *
@@ -62,9 +52,6 @@ class Premise_Portfolio {
 	 */
 	protected static $instance = null;
 
-
-
-
 	/**
 	 * Constructor. Intentionally left empty and public.
 	 *
@@ -72,10 +59,6 @@ class Premise_Portfolio {
 	 * @since 	1.0
 	 */
 	public function __construct() {}
-
-
-
-
 
 	/**
 	 * Access this plugin’s working instance
@@ -89,10 +72,6 @@ class Premise_Portfolio {
 		return self::$instance;
 	}
 
-
-
-
-
 	/**
 	 * Setup Premise
 	 *
@@ -104,11 +83,6 @@ class Premise_Portfolio {
 		$this->do_includes();
 		$this->do_hooks();
 	}
-
-
-
-
-
 
 	/**
 	 * Includes
@@ -139,20 +113,12 @@ class Premise_Portfolio {
 		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_n_styles' ) );
 	}
 
-
-
-
-
 	/**
 	 * Premise Hooks
 	 *
 	 * Registers and enqueues scripts, adds classes to the body of DOM
 	 */
 	public function do_hooks() {
-		// Initiate the options page
-		// TODO finish this class
-		// add_action( 'init', array( PWPP_Options_page::get_instance(), 'init' ) );
-
 		if ( class_exists( 'PWPP_Portfolio_CPT' ) ) {
 			// Initiate and register our custom post type
 			$portfolio_cpt = PWPP_Portfolio_CPT::get_instance();
@@ -171,10 +137,6 @@ class Premise_Portfolio {
 		}
 	}
 
-
-
-
-
 	/**
 	 * Flush rewrite rules if our plugin was just activated.
 	 */
@@ -191,9 +153,6 @@ class Premise_Portfolio {
 		}
 	}
 
-
-
-
 	/**
 	 * Install
 	 *
@@ -207,10 +166,6 @@ class Premise_Portfolio {
 			add_option( '_pwpp_activation_happened', true );
 		}
 	}
-
-
-
-
 
 	/**
 	 * Uninstall
@@ -226,10 +181,6 @@ class Premise_Portfolio {
 		// https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
 		flush_rewrite_rules();
 	}
-
-
-
-
 
 	/**
 	 * Require Premise WP if the class Premise_WP does not exist.
@@ -272,9 +223,11 @@ class Premise_Portfolio {
 
 	}
 
-
-
-
+	/**
+	 * output the scripts and styles for the portfolio
+	 *
+	 * @return void does not return anything. enqueues files
+	 */
 	public function scripts_n_styles() {
 		wp_register_style( 'pwpp_css', PWPP_URL . '/css/style.min.css' );
 		wp_register_script( 'pwpp_js', PWPP_URL . '/js/script.min.js' );
