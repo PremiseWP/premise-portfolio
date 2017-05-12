@@ -32,6 +32,9 @@ Go to <a href="http://plugins.premisewp.com/premise-portfolio/premise-portfolio/
 
 == Changelog ==
 
+= 1.2.1 =
+* Added ability to change the defaults from a filter. Documented filter in the Readme.md file.
+
 = 1.2.0 =
 * Simplified templates for portfolio loop and single post.
 * Added ability to filter portfolio items by category passing a param `cat` - can be a string of category names or ids sepatated by commas.
