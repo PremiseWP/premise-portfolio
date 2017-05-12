@@ -29,15 +29,17 @@ class PWPP_Shortcode {
 
 
 	/**
-	 * Thes shortcode defaults
+	 * The shortcode defaults
+	 *
+	 * Defaults can be change via a filter pwp_portfolio_sc_defaults
 	 *
 	 * @var array
 	 */
 	public $defaults = array(
-		'grid' => 'row',
-		'columns' => 'col4',
-		'class' => '',
-		'cat' => '',
+		'grid'    => 'row',
+		'columns' => '4',
+		'class'   => '',
+		'cat'     => '',
 	);
 
 
@@ -71,10 +73,15 @@ class PWPP_Shortcode {
 	 * @since 	1.0.0
 	 */
 	public function __construct() {
-		// set the default columns if it has been changed from the options page
-		if ( $_cols = premise_get_value( 'pwpp_portfolio[loop][cols]' ) ) {
-			$this->defaults['columns'] = esc_attr( $_cols );
-		}
+
+		/**
+		 * pwp_portfolio_sc_defaults filter allows you to change the default settings for the shortcode.
+		 *
+		 * @see https://developer.wordpress.org/reference/functions/add_filter/ for info on how to use filters
+		 *
+		 * @var array
+		 */
+		$this->defaults = apply_filters( 'pwp_portfolio_sc_defaults', $this->defaults );
 
 		self::$query_args = array(
 			'post_type' => 'premise_portfolio',
@@ -105,23 +112,28 @@ class PWPP_Shortcode {
 	 */
 	public function init( $atts ) {
 		// get these params and sve them in our object for public use.
-		$a = shortcode_atts( $this->defaults, $atts, 'pwp_portfolio' );
+		self::$params = shortcode_atts( $this->defaults, $atts, 'pwp_portfolio' );
 
 		// normalize columns param
-		$a['columns'] = (string) ( 6 >= (int) $a['columns'] && 2 <= (int) $a['columns'] ) ? 'col'.$a['columns'] : $a['columns'];
+		self::$params['columns'] =  (string) ( 6 >= (int) self::$params['columns']
+									&& 2 <= (int) self::$params['columns'] )
+									? self::$params['columns']
+									: self::$params['columns'];
 
 		// normalize categories
-		if ( isset( $a['cat'] ) && ! empty( $a['cat'] ) ) {
+		if ( isset( self::$params['cat'] )
+			 && ! empty( self::$params['cat'] ) ) {
+
 			self::$query_args['tax_query'] = array(
 				array(
 					'taxonomy' => 'premise-portfolio-category',
-					'field'    => ( preg_match( '/[^0-9,]/', $a['cat'] ) ) ? 'slug'                    : 'term_id',
-					'terms'    => ( preg_match( '/,/', $a['cat'] ) )       ? explode( ',', $a['cat'] ) : $a['cat'],
+					'field'    => ( preg_match( '/[^0-9,]/', self::$params['cat'] ) ) ? 'slug'                    : 'term_id',
+					'terms'    => ( preg_match( '/,/', self::$params['cat'] ) )       ? explode( ',', self::$params['cat'] ) : self::$params['cat'],
 				),
 			);
 		}
 
-		// Allow themes to override the tamllate that gets loaded
+		// Allow themes to override the tamplate that gets loaded
 		if ( '' !== ( $new_loop_tmpl = locate_template( 'loop-premise-portfolio.php' ) ) ) {
 			$this->loop_tmpl = $new_loop_tmpl;
 		}

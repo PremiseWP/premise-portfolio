@@ -68,7 +68,8 @@ function pwpp_loop_class( $classes = '' ) {
  */
 function pwpp_loop_item_class( $classes = '' ) {
 	$atts = PWPP_Shortcode::get_shortcode_atts();
-	echo 'class="' . esc_attr( $atts['columns'] . ' ' . $atts['class'] . ' ' . $classes ) . '"';
+	$col = 'col'.$atts['columns'];
+	echo 'class="' . esc_attr( $col . ' ' . $atts['class'] . ' ' . $classes ) . '"';
 }
 
 
