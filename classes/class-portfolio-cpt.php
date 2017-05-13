@@ -249,14 +249,14 @@ class PWPP_Portfolio_CPT {
 			}
 			return (string) PWPP_PATH . '/view/loop-premise-portfolio.php';
 		}
-		if ( 'premise_portfolio' == $post->post_type  ) {
-			// check if the theme is trying to overwrite the template
-			$new_template = locate_template( array( 'single-premise-portfolio.php' ) );
-			if ( '' != $new_template ) {
-				return $new_template ;
-			}
-			return (string) PWPP_PATH . '/view/single-premise-portfolio.php';
-		}
+		// if ( 'premise_portfolio' == $post->post_type  ) {
+		// 	// check if the theme is trying to overwrite the template
+		// 	$new_template = locate_template( array( 'single-premise-portfolio.php' ) );
+		// 	if ( '' != $new_template ) {
+		// 		return $new_template ;
+		// 	}
+		// 	return (string) PWPP_PATH . '/view/single-premise-portfolio.php';
+		// }
 		return $template;
 	}
 
