@@ -130,6 +130,8 @@ class Premise_Portfolio {
 
 			add_filter( 'template_include', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_page_template' ), 99 );
 
+			add_filter( 'the_content', array( 'PWPP_Portfolio_CPT', 'portfolio_content_filter' ), 99 );
+
 			add_filter( 'excerpt_length', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_excerpt_trim' ) );
 
 			// Add rewrite flush rules on init with a higher priority than 10.
