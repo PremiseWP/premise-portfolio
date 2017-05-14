@@ -32,6 +32,10 @@ Go to <a href="http://plugins.premisewp.com/premise-portfolio/premise-portfolio/
 
 == Changelog ==
 
+= 1.2.2 =
+* Added new filter 'pwp_portfolio_loop_excerpt' that lets you control the excerpt for portfolio items when displayed via the shortcode.
+* Removed template override for portfolio categories. The loop template is now only used by the shortcode class when loading a shortcode.
+
 = 1.2.1 =
 * Added ability to change the defaults from a filter. Documented filter in the Readme.md file.
 
