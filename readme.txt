@@ -17,9 +17,9 @@ This plugin was built to display the portfolio at <a href="http://premisewp.com"
 The idea here is that if you have a client that needs a portfolio and you are buiolding them a theme, you should be able to simply install the portfolio plugin in the client's site and then control all the options and the view directly from your theme. This way the plugin and your theme simply work nice together. When the plugin is updated none of your changes are affected.
 
 **Customize the shortcode**
-To control the view of the shortcode the easiest wasy to start is to copy the file `loop-premise-portfolio.php` located in the `view` directory of the plugin into your theme directory. From here you can change the HTML directly or add your own code.
+To control the view of the shortcode the easiest wasy to start is to copy the file `loop-premise-portfolio.php` located in the `view` directory of the plugin into your theme directory. From here you can change the HTML directly or add your own code. To remove any of the plugin's css simply remove the id attribute `pwpp-portfolio-grid`.
 
-Do the same thing with the file `content-premise-portfolio.php` to control the content of a single portfolio item.
+Do the same thing with the file `content-premise-portfolio.php` to control the content of a single portfolio item. To remove any of the plugin's css simply remove the id attribute `pwpp-portfolio-content`.
 
 == Installation ==
 
