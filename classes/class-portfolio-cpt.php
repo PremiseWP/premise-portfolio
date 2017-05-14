@@ -21,16 +21,12 @@ class PWPP_Portfolio_CPT {
 	 */
 	protected static $instance = null;
 
-
-
 	/**
 	 * the cutom post type supported
 	 *
 	 * @var array
 	 */
 	public $post_type = array( 'premise_portfolio' );
-
-
 
 	/**
 	 * creates our custom post type. The custom post type class neeeds to be initiated on init. so we run it here.
@@ -76,10 +72,10 @@ class PWPP_Portfolio_CPT {
 					'hierarchical' => false, // No sub-tags.
 				)
 			);
+
+			$this->init();
 		}
 	}
-
-
 
 	/**
 	 * Access this plugin’s working instance
@@ -93,8 +89,6 @@ class PWPP_Portfolio_CPT {
 		return self::$instance;
 	}
 
-
-
 	/**
 	 * initiate our plugin and registers the necessary hooks for our custom post type to work properly
 	 *
@@ -104,8 +98,6 @@ class PWPP_Portfolio_CPT {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'do_save' ), 10 );
 	}
-
-
 
 	/**
 	 * Add the meta box if within our custom post type
@@ -117,8 +109,6 @@ class PWPP_Portfolio_CPT {
 			add_meta_box( 'pwpp-cpt-meta-box', 'Portfolio Item Options', array( $this, 'render_meta_box' ), 'premise_portfolio', 'normal', 'high' );
 		}
 	}
-
-
 
 	/**
 	 * render the metabox content
@@ -174,8 +164,6 @@ class PWPP_Portfolio_CPT {
 		<?php
 	}
 
-
-
 	/**
 	 * Save our custom post type met data
 	 *
@@ -217,48 +205,9 @@ class PWPP_Portfolio_CPT {
         update_post_meta( $post_id, 'pwpp_portfolio', $pwpp_mb );
 	}
 
-
 	/*
-		Loading the template
+	 STATIC METHODS
 	 */
-
-
-	/**
-	 * replace the template for our portfolio items
-	 *
-	 * By naming a a file 'single-premise-portfolio.php' and placing it in the theme's directory
-	 * the plugin will try to load that theme instead of our default. This makes it very easy to
-	 * create custom templates for the plugin. Looks for the file in the child theme first, then
-	 * the parent theme if it cant find it. lastly it loads our default template if neither theme
-	 * had the file 'single-premise-portfolio.php'. And of course, if we are not in the premise-portfolio
-	 * post_type then we return the template that Wordpress was going to load - we dont change anything.
-	 *
-	 * @wp_hook  template_include
-	 *
-	 * @param  string $template the current template. the one would normally be loaded.
-	 * @return string           the new template. either our own template our the theme's template. or the current template
-	 */
-	function portfolio_page_template( $template ) {
-		global $post;
-
-		if ( is_tax( 'premise-portfolio-category' ) ) {
-			// check if the theme is trying to overwrite the template
-			$new_template = locate_template( array( 'loop-premise-portfolio.php' ) );
-			if ( '' != $new_template ) {
-				return $new_template ;
-			}
-			return (string) PWPP_PATH . '/view/loop-premise-portfolio.php';
-		}
-		// if ( 'premise_portfolio' == $post->post_type  ) {
-		// 	// check if the theme is trying to overwrite the template
-		// 	$new_template = locate_template( array( 'single-premise-portfolio.php' ) );
-		// 	if ( '' != $new_template ) {
-		// 		return $new_template ;
-		// 	}
-		// 	return (string) PWPP_PATH . '/view/single-premise-portfolio.php';
-		// }
-		return $template;
-	}
 
 	/**
 	 * filter the content for our portfolio items
@@ -274,7 +223,6 @@ class PWPP_Portfolio_CPT {
 		}
 		return $content;
 	}
-
 
 	/**
 	 * get the portfolio content
@@ -306,22 +254,20 @@ class PWPP_Portfolio_CPT {
 		return ob_get_clean();
 	}
 
-
-
 	/**
 	 * Filter the excerpt length for permise portfilio items. defaults to 22
-	 * but can be cnfigurable from the backend.
 	 *
 	 * @wp_hook excerpt_length
 	 *
-	 * @param  int $length excerpt legth
-	 * @return int         new excerpt length
+	 * @param   int $length excerpt legth
+	 * @return  int         new excerpt length
 	 */
-	function portfolio_excerpt_trim( $length ) {
+	public static function portfolio_excerpt_trim( $length ) {
 		global $post;
-
 		if ( 'premise_portfolio' == $post->post_type  ) {
-			return ( '' !== $new_length = ( string ) premise_get_value( 'pwpp_portfolio[loop][excerpt]' ) ) ? $new_length : 22;
+			return ( $new_length = apply_filters( 'pwp_portfolio_loop_excerpt' ) )
+					 ? $new_length
+					 : $length;
 		}
 		return $length;
 	}

@@ -110,7 +110,6 @@ class Premise_Portfolio {
 
 		require_once 'lib/functions.php';
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_n_styles' ) );
 	}
 
 	/**
@@ -119,23 +118,19 @@ class Premise_Portfolio {
 	 * Registers and enqueues scripts, adds classes to the body of DOM
 	 */
 	public function do_hooks() {
+		add_action( 'wp_enqueue_scripts', array( $this, 'scripts_n_styles' ) );
+		// register our shortcode
+		add_shortcode( 'pwp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
+		// Add rewrite flush rules on init with a higher priority than 10.
+		add_action( 'init', array( $this, 'maybe_flush_rules' ), 11 );
+		// portfolio CPT related hooks
 		if ( class_exists( 'PWPP_Portfolio_CPT' ) ) {
 			// Initiate and register our custom post type
 			$portfolio_cpt = PWPP_Portfolio_CPT::get_instance();
-
-			$portfolio_cpt->init();
-
-			// register our shortcode
-			add_shortcode( 'pwp_portfolio', array( PWPP_Shortcode::get_instance(), 'init' ) );
-
-			add_filter( 'template_include', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_page_template' ), 99 );
-
+			// filter the content for each portfolio item
 			add_filter( 'the_content', array( 'PWPP_Portfolio_CPT', 'portfolio_content_filter' ), 99 );
-
-			add_filter( 'excerpt_length', array( PWPP_Portfolio_CPT::get_instance(), 'portfolio_excerpt_trim' ) );
-
-			// Add rewrite flush rules on init with a higher priority than 10.
-			add_action( 'init', array( $this, 'maybe_flush_rules' ), 11 );
+			// filter the excerpt
+			add_filter( 'excerpt_length', array( 'PWPP_Portfolio_CPT', 'portfolio_excerpt_trim' ) );
 		}
 	}
 
@@ -177,7 +172,7 @@ class Premise_Portfolio {
 	static function do_uninstall( $networkwide ) {
 
 		// Remove rewrite rules check from DB.
-		delete_option( '_vmenu_activation_happened' );
+		delete_option( '_pwpp_activation_happened' );
 
 		// Flush rewrite rules.
 		// https://codex.wordpress.org/Function_Reference/flush_rewrite_rules
