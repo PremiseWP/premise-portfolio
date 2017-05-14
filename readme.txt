@@ -3,7 +3,7 @@ Contributors: premisewp
 Donate link: http://premisewp.com/donate
 Tags: portfolio, premise portfolio, minimalistic portfolio, simple portfolio, portfolio custom post type, premise wp, premise, premisewp
 Requires at least: 3.9.0
-Tested up to: 4.5
+Tested up to: 4.7
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,14 @@ Display a modern and minimalistic portfolio on your site. This is the official p
 
 == Description ==
 
-This plugin is in beta and should be used as such (there might be bugs but we are quickly fixing them :) ). This plugin was build to display the premise portfolio for <a href="http://premisewp.com" target="_blank">premisewp.com</a> so we could showcase the themes and plugins we build, like this one.
+This plugin was built to display the portfolio at <a href="http://premisewp.com" target="_blank">premisewp.com</a>. What's neat about this plugin, compared to the MANY other portfolio plugins out there, is that it was built with developers in mind. We have put together a plugin with no Options page (options are passed through filters from your theme). It offers a shortcode that accepts a few params (columns, additional classes, cat) and calls a loop template that can also be customized directly from your theme.
+
+The idea here is that if you have a client that needs a portfolio and you are buiolding them a theme, you should be able to simply install the portfolio plugin in the client's site and then control all the options and the view directly from your theme. This way the plugin and your theme simply work nice together. When the plugin is updated none of your changes are affected.
+
+**Customize the shortcode**
+To control the view of the shortcode the easiest wasy to start is to copy the file `loop-premise-portfolio.php` located in the `view` directory of the plugin into your theme directory. From here you can change the HTML directly or add your own code.
+
+Do the same thing with the file `content-premise-portfolio.php` to control the content of a single portfolio item.
 
 == Installation ==
 
