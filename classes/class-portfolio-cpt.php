@@ -119,49 +119,9 @@ class PWPP_Portfolio_CPT {
 		wp_nonce_field( 'premise_portfolio_nonce_check', 'premise_portfolio_nonce' );
 
 		// Add a call to action
-		$cfields = premise_get_value( 'pwpp_portfolio[custom-fields]', 'post' );
-		?>
-			<h4>Add Custom Meta Data To This Project</h4>
-			<div class="pwpfd-wrapper">
-				<?php
-
-				$i = 1;
-				foreach ( (array) $cfields as $k => $field ) {
-
-					?><div class="<?php echo ( $i == count( $cfields ) ) ? 'pwpp-project-custom-fields' : 'pwpfd-duplicate-this'; ?>">
-						<div class="premise-row"><?
-
-							premise_field_section( array(
-								array(
-									'type'          => 'text',
-									'label'         => 'Key',
-									'name'          => 'pwpp_portfolio[custom-fields]['.$k.'][key]',
-									'wrapper_class' => 'span4',
-									'context'       => 'post',
-								),
-								array(
-									'type'          => 'textarea',
-									'label'         => 'value',
-									'name'          => 'pwpp_portfolio[custom-fields]['.$k.'][value]',
-									'wrapper_class' => 'span8',
-									'context'       => 'post',
-								),
-							) );
-
-						?></div>
-					</div><?
-
-					$i++;
-				} ?>
-			</div>
-			<script type="text/javascript">
-				(function($) {
-					$(document).ready(function(){
-						$( '.pwpp-project-custom-fields' ).premiseFieldDuplicate();
-					});
-				}(jQuery));
-			</script>
-		<?php
+		// $cfields = premise_get_value( 'pwpp_portfolio[custom-fields]', 'post' );
+		?><h4>Add Custom Meta Data To This Project</h4><?
+		pwp_custom_fields( 'pwpp_portfolio' );
 	}
 
 	/**
