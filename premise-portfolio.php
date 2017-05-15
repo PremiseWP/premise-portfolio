@@ -3,7 +3,7 @@
  * Plugin Name: Premise Portfolio
  * Description: Display a modern and minimalistic portfolio on your site. This is the official portfolio plugin used across http://premisewp.com to display the themes and plugins that we build. The main idea of this plugin is to offer an easy solution that looks beautiful out of the box, but that also allows you to fully customize the look and behaviour of your portfolio.
  * Plugin URI:  https://plugins.premisewp.com/wordpress-portfolio-plugin
- * Version:     1.2.2
+ * Version:     1.2.3
  * Author:      Premise WP <info@premisewp.com> by: Mario Vallejo
  * Author URI:  http://premisewp.com
  * License:     GPL
@@ -195,7 +195,7 @@ class Premise_Portfolio {
 				'slug'               => 'Premise-WP',
 				'source'             => 'https://github.com/PremiseWP/Premise-WP/archive/master.zip',
 				'required'           => true,
-				'version'            => '1.4.3',
+				'version'            => '2.0.2',
 				'force_activation'   => false,
 				'force_deactivation' => false,
 				'external_url'       => '',

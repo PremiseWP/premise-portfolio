@@ -142,7 +142,7 @@ function pwpp_get_custom_fields() {
 
 function pwpp_the_custom_fields( $format = 'dl' ) {
 
-	if ( $cf = premise_get_value( 'pwpp_portfolio[custom-fields]', 'post' ) ) {
+	if ( $cf = premise_get_value( 'pwpp_portfolio[pwp_custom_fields]', 'post' ) ) {
 
 		$list = '<div class="pwpp-custom-fields-container">';
 
