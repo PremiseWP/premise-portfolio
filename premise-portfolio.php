@@ -99,7 +99,7 @@ class Premise_Portfolio {
 
 			add_action( 'tgmpa_register', array( $this, 'require_premise' ) );
 
-			return;
+			// return;
 		}
 
 		require_once 'classes/class-options-page.php';
