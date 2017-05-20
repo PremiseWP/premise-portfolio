@@ -214,7 +214,8 @@ class PWPP_Portfolio_CPT {
 	public static function portfolio_excerpt_trim( $length ) {
 		global $post;
 		if ( 'premise_portfolio' == $post->post_type  ) {
-			return ( $new_length = apply_filters( 'pwp_portfolio_loop_excerpt' ) )
+			$new_length = apply_filters( 'pwp_portfolio_loop_excerpt', $new_length );
+			return ( 1 >= $new_length )
 					 ? $new_length
 					 : $length;
 		}

@@ -7,6 +7,8 @@
  * @package premise-portfolio\view
  */
 
+// get the excerpt. Supposed to return an int
+$excerpt = apply_filters( 'pwp_portfolio_loop_excerpt', $excerpt );
 ?>
 
 <section id="pwpp-portfolio-grid" class="premise-block premise-clear-float">
@@ -36,7 +38,7 @@
 										</div>
 
 										<div class="pwpp-post-excerpt">
-											<?php ( apply_filters( 'pwp_portfolio_loop_excerpt' ) )
+											<?php ( 1 >= $excerpt )
 												? the_excerpt()
 												: the_content(); ?>
 										</div>
